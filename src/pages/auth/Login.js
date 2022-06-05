@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center flex-col h-screen bg-gray-100">
       <form className="w-full p-5 shadow rounded sm:max-w-sm bg-white" onSubmit={onSubmit}>
-        <H1 className="mb-5 text-3xl text-gray-700 text-center font-light">Bienvenido</H1>
+        <H1 className="mb-5 text-2xl text-gray-700 text-center font-light">Bienvenido</H1>
 
         <FormGroup className="text-sm text-gray-700" label="Email:">
           <Input type="text" name="email" placeholder="Ingresa tu Email..." onChange={onChange} />
