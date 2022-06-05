@@ -30,7 +30,7 @@ const Navbar = ({ current, change }) => {
       </div>
 
       <div
-        className="flex flex-col gap-2 w-full p-3 transition-all"
+        className="z-50 flex flex-col gap-2 w-full p-3 transition-all"
         style={{
           background: "#0E1A35",
           position: "absolute",

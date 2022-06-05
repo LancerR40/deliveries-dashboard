@@ -37,14 +37,22 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center flex-col h-screen bg-gray-100">
       <form className="w-full p-5 shadow rounded sm:max-w-sm bg-white" onSubmit={onSubmit}>
-        <H1 className="mb-5 text-2xl text-gray-700 text-center font-light">Bienvenido</H1>
+        <H1 className="mb-5 text-center" color="gray-700" weight="light">
+          Bienvenido
+        </H1>
 
-        <FormGroup className="text-sm text-gray-700" label="Email:">
-          <Input type="text" name="email" placeholder="Ingresa tu Email..." onChange={onChange} />
+        <FormGroup label="Email:" size="sm" color="gray-700">
+          <Input type="text" name="email" placeholder="Ingresa tu Email..." color="gray-700" onChange={onChange} />
         </FormGroup>
 
-        <FormGroup label="Contraseña:" className="mt-5 text-sm text-gray-700">
-          <Input type="password" name="password" placeholder="Ingresa tu contraseña..." onChange={onChange} />
+        <FormGroup label="Contraseña:" size="sm" color="gray-700" className="mt-5">
+          <Input
+            type="password"
+            name="password"
+            placeholder="Ingresa tu contraseña..."
+            color="gray-700"
+            onChange={onChange}
+          />
         </FormGroup>
 
         <div className="mt-5 text-right">
@@ -57,7 +65,7 @@ const Login = () => {
           <hr className="mt-5 border border-gray-100" />
         </div>
 
-        <Button type="submit" className="relative mt-5 bg-blue-500 text-sm text-white">
+        <Button type="submit" bg="blue-500" color="white" className="mt-5 relative">
           Ingresar
           <MdKeyboardArrowRight className="absolute right-2 top-2.5 text-lg" />
         </Button>

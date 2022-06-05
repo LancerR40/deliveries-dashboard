@@ -1,10 +1,12 @@
-const H2 = ({ className, style, children }) => {
-  const classes = `text-2xl ${className}`;
+import classNames from "classnames";
+
+const H2 = ({ className, style, size, color, weight, children }) => {
+  const classes = classNames(className, `text-${color} text-${size} font-${weight}`);
 
   return (
-    <h2 className={classes} style={style}>
+    <h1 className={classes} style={style}>
       {children}
-    </h2>
+    </h1>
   );
 };
 
