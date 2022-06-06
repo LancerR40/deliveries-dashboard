@@ -1,10 +1,11 @@
 import { Tabs, TabPane } from "../ui";
 import List from "./List";
 import Form from "./Form";
+import Documents from "./Documents";
 
 const Drivers = () => {
   return (
-    <Tabs defaultTabPane={1}>
+    <Tabs defaultTabPane={3}>
       <TabPane tab="Listado" id={1}>
         <List />
       </TabPane>
@@ -13,7 +14,9 @@ const Drivers = () => {
         <Form />
       </TabPane>
 
-      <TabPane tab="Documentos" id={3}></TabPane>
+      <TabPane tab="Documentos" id={3}>
+        <Documents />
+      </TabPane>
     </Tabs>
   );
 };
