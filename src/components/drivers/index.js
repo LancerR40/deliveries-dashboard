@@ -1,11 +1,12 @@
 import { Tabs, TabPane } from "../ui";
+import List from "./List";
 import Form from "./Form";
 
 const Drivers = () => {
   return (
-    <Tabs defaultTabPane={2}>
+    <Tabs defaultTabPane={1}>
       <TabPane tab="Listado" id={1}>
-        <div className="mt-5">Hola</div>
+        <List />
       </TabPane>
 
       <TabPane tab="Formulario" id={2}>

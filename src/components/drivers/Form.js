@@ -1,16 +1,25 @@
-import { FormGroup, Input, Date, Photo, RadioGroup, Radio, Button, H2 } from "../ui";
+import { FormGroup, Input, Date, Photo, RadioGroup, Radio, Select, Option, Button, H2 } from "../ui";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import { useState } from "react";
 
 const Form = () => {
   const [data, setData] = useState({
     gender: 1,
   });
+  const [displayDocumentForm, setDisplayDocumentForm] = useState(false);
 
   const onChange = (e) => {
     const { name, value } = e.target;
 
     setData((state) => ({ ...state, [name]: value }));
   };
+
+  const documentFormHandler = () => {
+    setDisplayDocumentForm(!displayDocumentForm);
+    setData((state) => ({ ...state, documentType: "" }));
+  };
+
+  console.log(data);
 
   return (
     <form>
@@ -66,6 +75,45 @@ const Form = () => {
       <FormGroup className="mt-5" label="Foto:" size="sm" color="gray-700">
         <Photo name="photo" placeholder="Subir una foto de identificación..." color="gray-700" onChange={onChange} />
       </FormGroup>
+
+      <div className="mt-5">
+        <span className="text-blue-500 text-sm cursor-pointer flex items-center" onClick={documentFormHandler}>
+          Desplegar formulario para añadir documento
+          <MdKeyboardArrowRight className={`text-lg transition-all ${displayDocumentForm && "rotate-90"}`} />
+        </span>
+
+        <div
+          className={`transition-all ${
+            displayDocumentForm ? "mt-5 h-fit pointer-events-auto opacity-1" : "h-0 pointer-events-none opacity-0"
+          }`}
+        >
+          {displayDocumentForm && (
+            <Select name="documentType" color="gray-700" onChange={onChange}>
+              <Option>Selecciona un documento...</Option>
+              <Option value={1}>Licencia de conducir</Option>
+            </Select>
+          )}
+
+          {data?.documentType === "1" && (
+            <div className="mt-5">
+              <Select name="licenseType" color="gray-700" onChange={onChange}>
+                <Option>Selecciona un tipo de licencia...</Option>
+                <Option value="A">A</Option>
+                <Option value="B">B</Option>
+                <Option value="C">C</Option>
+              </Select>
+
+              <FormGroup className="mt-5" label="Expedición:" size="sm" color="gray-700">
+                <Date name="expeditionDate" color="gray-700" onChange={onChange} />
+              </FormGroup>
+
+              <FormGroup className="mt-5" label="Expiración:" size="sm" color="gray-700">
+                <Date name="expirationDate" color="gray-700" onChange={onChange} />
+              </FormGroup>
+            </div>
+          )}
+        </div>
+      </div>
 
       <Button type="submit" bg="blue-500" color="white" className="mt-5 lg:w-96">
         Registrar
