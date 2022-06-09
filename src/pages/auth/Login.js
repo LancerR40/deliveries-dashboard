@@ -2,11 +2,17 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Input, Button, FormGroup, H1 } from "../../components/ui";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { loginAPI } from "../../api/auth";
+import { useAuthContext } from "../../contexts/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { setAuth } = useAuthContext();
+  const navigate = useNavigate();
+
   const [data, setData] = useState({});
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (!data.email) {
@@ -25,7 +31,25 @@ const Login = () => {
       return alert("La contraseña debe tener seis(6) o más carácteres");
     }
 
-    console.log(data);
+    const response = await loginAPI(data);
+
+    if (!response) {
+      return alert("Ups! ocurrio un error.");
+    }
+
+    if (!response.success) {
+      return alert(response.error.message);
+    }
+
+    if (response.success) {
+      console.log(response.data);
+      const { auth, role, token } = response.data;
+
+      navigate("/dashboard");
+
+      setAuth({ isAuth: auth, role });
+      localStorage.setItem("token", token);
+    }
   };
 
   const onChange = (e) => {
@@ -37,7 +61,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center flex-col h-screen bg-gray-100">
       <form className="w-full p-5 shadow rounded sm:max-w-sm bg-white" onSubmit={onSubmit}>
-        <H1 className="mb-5 text-center" color="gray-700" weight="light">
+        <H1 className="mb-5 text-center" color="gray-700" size="2xl" weight="light">
           Bienvenido
         </H1>
 
