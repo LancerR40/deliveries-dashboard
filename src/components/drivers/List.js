@@ -52,7 +52,6 @@ const List = () => {
         page,
         field: inputSearch,
       },
-      fields: ["IDDriver", "name", "lastname", "identificationCode", "photo", "email", "createdAt"],
     };
 
     const response = await driversByQueriesAPI(data);
@@ -60,13 +59,17 @@ const List = () => {
     if (response.success) {
       const { drivers, counter } = response.data;
 
-      const mapping = drivers.map((driver) => ({
-        key: driver.IDDriver,
-        name: driver,
-        identificationCode: driver.identificationCode,
-        email: driver.email,
-        createdAt: driver.createdAt,
-      }));
+      const mapping = drivers.map((driver) => {
+        const { driverId, identificationCode, email, createdAt } = driver;
+
+        return {
+          key: driverId,
+          name: driver,
+          identificationCode: identificationCode,
+          email: email,
+          createdAt: createdAt,
+        };
+      });
 
       setDrivers(mapping);
       setDriverCounter(counter);
