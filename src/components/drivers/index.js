@@ -5,7 +5,7 @@ import Documents from "./Documents";
 
 const Drivers = () => {
   return (
-    <Tabs defaultTabPane={2}>
+    <Tabs defaultTabPane={1}>
       <TabPane tab="Listado" id={1}>
         <List />
       </TabPane>
