@@ -32,7 +32,6 @@ export const loginAPI = async (data) => {
 
     return request.data;
   } catch (error) {
-    console.log(error);
-    return false;
+    return error;
   }
 };

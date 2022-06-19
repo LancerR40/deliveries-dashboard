@@ -42,7 +42,6 @@ const Login = () => {
     }
 
     if (response.success) {
-      console.log(response.data);
       const { auth, role, token } = response.data;
 
       navigate("/dashboard");
