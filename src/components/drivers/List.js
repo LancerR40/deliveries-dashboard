@@ -57,7 +57,6 @@ const List = () => {
     };
 
     const response = await driversByQueriesAPI(data);
-    console.log(response);
 
     if (response.success) {
       const { drivers, counter, perPage } = response.data;
