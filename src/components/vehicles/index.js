@@ -1,9 +1,8 @@
 import { Tabs, TabPane } from "../ui";
 import List from "./List";
 import Form from "./Form";
-import Documents from "./Documents";
 
-const Drivers = () => {
+const Vehicles = () => {
   return (
     <Tabs defaultTabPane={2}>
       <TabPane tab="Listado" id={1}>
@@ -14,11 +13,9 @@ const Drivers = () => {
         <Form />
       </TabPane>
 
-      <TabPane tab="Documentos" id={3}>
-        <Documents />
-      </TabPane>
+      <TabPane tab="Vincular" id={3}></TabPane>
     </Tabs>
   );
 };
 
-export default Drivers;
+export default Vehicles;

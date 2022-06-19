@@ -5,8 +5,9 @@ const Input = ({
   style,
   type = "text",
   name,
-  defaultValue,
   placeholder,
+  defaultValue,
+  value,
   color,
   size = "sm",
   onChange,
@@ -21,6 +22,22 @@ const Input = ({
     }
   );
 
+  const onChangeHandler = (e) => {
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
+  const customProps = {};
+
+  if (typeof value === "string") {
+    customProps.value = value;
+  }
+
+  if (typeof defaultValue === "string") {
+    customProps.defaultValue = defaultValue;
+  }
+
   return (
     <input
       className={classes}
@@ -28,8 +45,8 @@ const Input = ({
       type={type}
       name={name}
       placeholder={placeholder}
-      onChange={onChange}
-      defaultValue={defaultValue}
+      onChange={onChangeHandler}
+      {...customProps}
     >
       {children}
     </input>

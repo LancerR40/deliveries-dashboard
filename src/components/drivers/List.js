@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { H2, Search, Table } from "../ui";
+import { H2, Search, Table, Pagination } from "../ui";
+
 import { driversByQueriesAPI } from "../../api/drivers";
 
 const COLUMNS_TABLE = [
@@ -41,6 +42,7 @@ const List = () => {
   const [inputSearch, setInputSearch] = useState("");
 
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(1);
 
   useEffect(() => {
     getDrivers();
@@ -55,9 +57,10 @@ const List = () => {
     };
 
     const response = await driversByQueriesAPI(data);
+    console.log(response);
 
     if (response.success) {
-      const { drivers, counter } = response.data;
+      const { drivers, counter, perPage } = response.data;
 
       const mapping = drivers.map((driver) => {
         const { driverId, identificationCode, email, createdAt } = driver;
@@ -73,11 +76,16 @@ const List = () => {
 
       setDrivers(mapping);
       setDriverCounter(counter);
+      setPerPage(perPage);
     }
   };
 
   const onChange = (e) => {
     setInputSearch(e.target.value);
+  };
+
+  const pageOnChange = (page) => {
+    setPage(page);
   };
 
   return (
@@ -90,6 +98,10 @@ const List = () => {
 
       <div className="mt-5">
         <Table columns={COLUMNS_TABLE} dataSource={drivers} />
+      </div>
+
+      <div className="mt-5 flex justify-end">
+        <Pagination total={driversCounter} perPage={perPage} currentPage={page} onChange={pageOnChange} />
       </div>
     </div>
   );

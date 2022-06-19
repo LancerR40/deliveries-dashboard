@@ -3,10 +3,13 @@ import Navigation from "../../components/navigation";
 import { H1 } from "../../components/ui";
 import { DASHBOARD_SECTIONS } from "../../constants";
 import image from "../../assets/images/image.png";
+
 import Drivers from "../../components/drivers";
+import Vehicles from "../../components/vehicles";
+import Deliveries from "../../components/deliveries";
 
 const Dashboard = () => {
-  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.dashboard);
+  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.drivers);
 
   return (
     <div className="lg:flex lg:min-h-screen lg:h-screen">
@@ -36,7 +39,11 @@ const Dashboard = () => {
         </div>
 
         <div className="mt-3">
-          <Drivers />
+          {currentSection === DASHBOARD_SECTIONS.english.drivers && <Drivers />}
+
+          {currentSection === DASHBOARD_SECTIONS.english.vehicles && <Vehicles />}
+
+          {currentSection === DASHBOARD_SECTIONS.english.deliveries && <Deliveries />}
         </div>
       </div>
     </div>

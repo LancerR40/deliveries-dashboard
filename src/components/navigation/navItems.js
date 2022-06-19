@@ -1,8 +1,8 @@
 import { MdDashboard, MdScreenshot } from "react-icons/md";
-// import { HiUsers } from "react-icons/hi";
 import { ImUsers } from "react-icons/im";
 import { BiLogOut } from "react-icons/bi";
 import { TbTruckDelivery } from "react-icons/tb";
+import { FaTruck } from "react-icons/fa";
 
 const navItems = [
   {
@@ -27,6 +27,11 @@ const navItems = [
   },
   {
     id: 5,
+    name: "vehicles",
+    icon: <FaTruck className="text-lg" />,
+  },
+  {
+    id: 6,
     name: "logout",
     icon: <BiLogOut className="text-lg" />,
   },

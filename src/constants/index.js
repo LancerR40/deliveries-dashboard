@@ -4,6 +4,7 @@ export const DASHBOARD_SECTIONS = {
     deliveries: "Pedidos",
     tracker: "Seguimiento",
     drivers: "Conductores",
+    vehicles: "Vehiculos",
     logout: "Cerrar sesión",
   },
   english: {
@@ -11,6 +12,7 @@ export const DASHBOARD_SECTIONS = {
     deliveries: "Deliveries",
     tracker: "Tracker",
     drivers: "Drivers",
+    vehicles: "Vehicles",
     logout: "Logout",
   },
 };

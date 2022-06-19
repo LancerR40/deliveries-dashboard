@@ -1,17 +1,35 @@
+import { useState, useEffect } from "react";
+
 import { FormGroup, Input, Date, Photo, RadioGroup, Radio, Select, Option, Button, H2 } from "../ui";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { useState } from "react";
-import { createDriverAPI, addDriverDocumentAPI } from "../../api/drivers";
+
+import { driversDocumentsAPI, createDriverAPI, addDriverDocumentAPI } from "../../api/drivers";
 
 const Form = () => {
   const [data, setData] = useState({
-    gender: 1,
+    gender: "Masculino",
   });
   const [document, setDocument] = useState({});
   const [displayDocumentForm, setDisplayDocumentForm] = useState(false);
+  const [documentTypes, setDocumentTypes] = useState([]);
+
+  useEffect(() => {
+    driversDocuments();
+  }, []);
+
+  const driversDocuments = async () => {
+    const response = await driversDocumentsAPI();
+
+    if (response.success) {
+      setDocumentTypes(response.data);
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(data);
+    console.log(document);
 
     const formData = new FormData();
 
@@ -19,10 +37,10 @@ const Form = () => {
     formData.append("lastname", data.lastname);
     formData.append("identificationCode", data.identificationCode);
     formData.append("gender", data.gender);
+    formData.append("photo", data.photo);
     formData.append("dateOfBirth", data.dateOfBirth);
     formData.append("email", data.email);
     formData.append("password", data.password);
-    formData.append("photo", data.photo);
 
     const createDriverResponse = await createDriverAPI(formData);
 
@@ -31,10 +49,11 @@ const Form = () => {
     }
 
     if (createDriverResponse.success) {
-      if (document?.title !== "") {
-        document.driverName = data.name;
-        document.driverLastname = data.lastname;
-        document.driverIdentificationCode = data.identificationCode;
+      if (document.title) {
+        document.name = data.name;
+        document.lastname = data.lastname;
+        document.identificationCode = data.identificationCode;
+        document.gender = data.gender;
 
         const addDriverDocumentResponse = await addDriverDocumentAPI(document);
 
@@ -43,11 +62,11 @@ const Form = () => {
         }
 
         if (addDriverDocumentResponse.success) {
-          return alert("Se registro todo.");
+          return alert("Se registró el conductor y el documento personal.");
         }
-
-        alert(createDriverResponse.data.message);
       }
+
+      alert(createDriverResponse.data.message);
     }
   };
 
@@ -64,7 +83,7 @@ const Form = () => {
   const documentOnChange = (e) => {
     const { name, value } = e.target;
 
-    setDocument((state) => ({ ...state, document: { ...state.document, [name]: value } }));
+    setDocument((state) => ({ ...state, [name]: value }));
   };
 
   const documentFormHandler = () => {
@@ -104,10 +123,10 @@ const Form = () => {
       </FormGroup>
 
       <RadioGroup label="Género:" value="gender" size="sm" color="gray-700" className="mt-5" onChange={driverOnChange}>
-        <Radio size="sm" color="gray-700" value={1} isChecked>
+        <Radio size="sm" color="gray-700" value="Masculino" defaultChecked>
           Masculino
         </Radio>
-        <Radio size="sm" color="gray-700" value={2}>
+        <Radio size="sm" color="gray-700" value="Femenino">
           Femenino
         </Radio>
       </RadioGroup>
@@ -153,13 +172,17 @@ const Form = () => {
           {displayDocumentForm && (
             <Select name="title" color="gray-700" onChange={documentOnChange}>
               <Option>Selecciona un documento...</Option>
-              <Option value="driver license">Licencia de conducir</Option>
+              {documentTypes.map(({ id, name }) => (
+                <Option key={id} value={name}>
+                  {name}
+                </Option>
+              ))}
             </Select>
           )}
 
-          {document?.document?.title === "driver license" && (
+          {document?.title === "Licencia de conducir" && (
             <div className="mt-5">
-              <Select name="licenseType" color="gray-700" onChange={documentOnChange}>
+              <Select name="type" color="gray-700" onChange={documentOnChange}>
                 <Option>Selecciona un tipo de licencia...</Option>
                 <Option value="A">A</Option>
                 <Option value="B">B</Option>
