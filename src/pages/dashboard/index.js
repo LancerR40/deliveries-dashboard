@@ -9,7 +9,7 @@ import Vehicles from "../../components/vehicles";
 import Deliveries from "../../components/deliveries";
 
 const Dashboard = () => {
-  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.drivers);
+  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.vehicles);
 
   return (
     <div className="lg:flex lg:min-h-screen lg:h-screen">

@@ -9,3 +9,4 @@ export const CREATE_DRIVER_URL = `${BASE_URL}/drivers/create`;
 // export const ADD_DRIVER_DOCUMENT_URL = `${BASE_URL}/drivers/document`;
 
 export const VEHICLE_BRANDS_URL = `${BASE_URL}/vehicles/brands`;
+export const VEHICLE_BY_QUERIES_URL = `${BASE_URL}/vehicles`;
