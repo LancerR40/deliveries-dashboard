@@ -17,7 +17,7 @@ export const checkSessionAPI = async () => {
     if (error.response.status === 401) {
       localStorage.removeItem("token");
 
-      window.location.href = "/auth/login";
+      window.location.href = "/";
     }
 
     return false;

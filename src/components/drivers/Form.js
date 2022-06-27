@@ -28,9 +28,6 @@ const Form = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(data);
-    console.log(document);
-
     const formData = new FormData();
 
     formData.append("name", data.name);

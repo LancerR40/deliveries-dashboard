@@ -12,6 +12,7 @@ const Input = ({
   size = "sm",
   onChange,
   children,
+  disabled = false,
 }) => {
   const classes = classNames(
     className,
@@ -46,6 +47,7 @@ const Input = ({
       name={name}
       placeholder={placeholder}
       onChange={onChangeHandler}
+      disabled={disabled}
       {...customProps}
     >
       {children}
