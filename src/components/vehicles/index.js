@@ -4,7 +4,7 @@ import Form from "./Form";
 
 const Vehicles = () => {
   return (
-    <Tabs defaultTabPane={1}>
+    <Tabs defaultTabPane={2}>
       <TabPane tab="Listado" id={1}>
         <List />
       </TabPane>
