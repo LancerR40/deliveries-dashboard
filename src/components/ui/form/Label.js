@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-const defaultClasses = "mb-2";
+const defaultClasses = "mb-2 inline-block";
 
 const Label = ({ className, style, children }) => {
   const classes = classNames(defaultClasses, className);

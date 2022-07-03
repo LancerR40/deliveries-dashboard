@@ -1,9 +1,9 @@
 import classNames from "classnames";
 
-const defaultClasses = "w-full rounded transition-all";
+const defaultClasses = "w-full rounded transition-all text-base";
 const sizes = {
-  sm: "p-2 text-sm",
-  lg: "p-3 text-base",
+  sm: "p-2",
+  lg: "p-3",
 };
 const colors = {
   primary: "bg-blue-500 text-white hover:bg-blue-600",
