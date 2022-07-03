@@ -1,7 +1,9 @@
 import classNames from "classnames";
 
-const H1 = ({ className, style, size, color, weight, children }) => {
-  const classes = classNames(className, `text-${color} text-${size} font-${weight}`);
+const defaultClasses = "text-3xl font-bold";
+
+const H1 = ({ className, style, children }) => {
+  const classes = classNames(defaultClasses, className);
 
   return (
     <h1 className={classes} style={style}>

@@ -1,6 +1,12 @@
 import { Children, cloneElement, isValidElement } from "react";
+import classNames from "classnames";
 
-const RadioGroup = ({ className, style, label, value, children, color, size, onChange }) => {
+const sizes = { 
+  sm: "text-sm", 
+  lg: "text-base" 
+};
+
+const RadioGroup = ({ className, style, size = "sm", value, onChange, children }) => {
   const radios = Children.map(children, (child) => {
     if (isValidElement(child)) {
       const props = { name: value, onChange };
@@ -11,10 +17,10 @@ const RadioGroup = ({ className, style, label, value, children, color, size, onC
     return child;
   });
 
-  return (
-    <div className={className} style={style}>
-      <label className={`text-${color} text-${size}`}>{label}</label>
+  const classes = classNames(sizes[size], className);
 
+  return (
+    <div className={classes} style={style}>
       <div className="flex mt-5">{radios}</div>
     </div>
   );

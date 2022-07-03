@@ -2,14 +2,14 @@ import classNames from "classnames";
 
 const defaultClasses = "mb-2";
 
-const FormGroup = ({ className, style, children }) => {
+const Label = ({ className, style, children }) => {
   const classes = classNames(defaultClasses, className);
 
   return (
-    <div className={classes} style={style}>
+    <label className={classes} style={style}>
       {children}
-    </div>
+    </label>
   );
 };
 
-export default FormGroup;
+export default Label;

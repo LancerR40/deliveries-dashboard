@@ -1,15 +1,14 @@
 import classNames from "classnames";
 import { GoSearch } from "react-icons/go";
 
-const Search = ({ className, style, name, placeholder, color, size = "sm", onChange }) => {
-  const classes = classNames(
-    className,
-    `flex items-center w-full rounded border-2 border-gray-100 focus-within:border-blue-500 transition-all text-${color}`,
-    {
-      "p-2.5 text-sm": size === "sm",
-      "p-3 text-base": size === "lg",
-    }
-  );
+const defaultClasses = "flex items-center w-full rounded border-2 border-gray-100 focus-within:border-blue-500 transition-all";
+const sizes = {
+  sm: "p-2 text-sm",
+  lg: "p-3 text-base",
+};
+
+const Search = ({ className, style, size = "sm", name, placeholder, onChange }) => {
+  const classes = classNames(defaultClasses, sizes[size], className);
 
   return (
     <div className={classes} style={style}>

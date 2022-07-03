@@ -1,4 +1,11 @@
-const Radio = ({ name, value, children, color, size, onChange, defaultChecked, checked }) => {
+import classNames from "classnames";
+
+const sizes = { 
+  sm: "text-sm", 
+  lg: "text-base" 
+};
+
+const Radio = ({ name, size = "sm", value, defaultChecked, checked, onChange, children }) => {
   const customProps = {};
 
   if (typeof checked === "boolean") {
@@ -9,11 +16,13 @@ const Radio = ({ name, value, children, color, size, onChange, defaultChecked, c
     customProps.defaultChecked = defaultChecked;
   }
 
-  return (
-    <div className="mr-5">
-      <input type="radio" name={name} value={value} onChange={onChange} {...customProps} />
+  const classes = classNames("mr-5", sizes[size], classNames);
 
-      <span className={`ml-2 text-${color} text-${size}`}>{children}</span>
+  return (
+    <div className={classes}>
+      <input className="mr-2" type="radio" name={name} value={value} onChange={onChange} {...customProps} />
+
+      <span>{children}</span>
     </div>
   );
 };

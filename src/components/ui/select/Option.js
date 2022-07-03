@@ -1,4 +1,4 @@
-const Option = ({ value = "", children, isDisable = false }) => {
+const Option = ({ value = "", isDisable = false, children}) => {
   return (
     <option value={value} disabled={isDisable}>
       {children}
