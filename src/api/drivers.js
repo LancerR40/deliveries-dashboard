@@ -31,7 +31,7 @@ export const createDriverAPI = async (data) => {
   }
 };
 
-export const addDriverDocumentAPI = async (data) => {
+export const createDriverDocumentAPI = async (data) => {
   try {
     const request = await axios.post(DRIVERS_DOCUMENTS, data);
 

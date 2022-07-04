@@ -21,7 +21,7 @@ export const getBrandsAPI = async () => {
   }
 };
 
-export const vehicleDocumentsAPI = async () => {
+export const getVehicleDocumentsAPI = async () => {
   try {
     const request = await axios.get(VEHICLE_DOCUMENTS);
 
