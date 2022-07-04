@@ -1,17 +1,15 @@
-import { FormGroup, Input, Select, Option, Button, H2, Search } from "../ui";
+import { FormGroup, Input, Select, Option, Button, H2, H3, Search, Label, Date } from "../ui";
 import { useState, useEffect } from "react";
 
-import { getBrandsAPI, createVehicleAPI } from "../../api/vehicles";
+import { getBrandsAPI, createVehicleAPI, getVehicleDocumentsAPI } from "../../api/vehicles";
 import { driversByQueriesAPI } from "../../api/drivers";
 
 import classNames from "classnames";
-import { MdAddToPhotos } from "react-icons/md";
+import { MdAddToPhotos, MdOutlineCancel } from "react-icons/md";
 
 const Form = () => {
   const [brands, setBrands] = useState([]);
   const [ownerType, setOwnerType] = useState("company");
-
-  const [selectedColor, setSelectedColor] = useState("");
 
   const [vehicle, setVehicle] = useState({
     model: "",
@@ -20,13 +18,26 @@ const Form = () => {
     type: "",
     licenseNumber: "",
     tiresNumber: "",
-    owner: "company",
   });
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const [document, setDocument] = useState({ title: "", name: "", lastname: "", identificationCode: "" });
+  const [documentTypes, setDocumentTypes] = useState([]);
+
   const [drivers, setDrivers] = useState([]);
 
   useEffect(() => {
     getBrands();
+    getVehicleDocuments();
   }, []);
+
+  const getVehicleDocuments = async () => {
+    const response = await getVehicleDocumentsAPI();
+
+    if (response.success) {
+      setDocumentTypes(response.data);
+    }
+  };
 
   const getBrands = async () => {
     const response = await getBrandsAPI();
@@ -39,7 +50,7 @@ const Form = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await createVehicleAPI(vehicle);
+    const response = await createVehicleAPI({ ...vehicle, document });
 
     if (!response.success) {
       alert(response.error.message);
@@ -53,10 +64,10 @@ const Form = () => {
         type: "",
         licenseNumber: "",
         tiresNumber: "",
-        owner: "company",
       });
       setSelectedColor("");
       setOwnerType("company");
+      setDocument({ title: "", name: "", lastname: "", identificationCode: "" });
 
       alert(response.data.message);
     }
@@ -68,25 +79,39 @@ const Form = () => {
     setVehicle((state) => ({ ...state, [name]: value }));
   };
 
+  const documentHandler = (e) => {
+    const { name, value } = e.target;
+
+    setDocument((state) => ({ ...state, [name]: value }));
+  };
+
   const addColorHandler = () => {
     const colorsLength = vehicle?.colors?.length;
 
+    if (!selectedColor) {
+      return alert("El color es requerido.");
+    }
+
     if (colorsLength === 2) {
       return alert("No puedes añadir más de dos colores");
+    }
+
+    if (vehicle.colors.filter((color) => color === selectedColor).length) {
+      return alert("El color se encuentra añadido.");
     }
 
     setVehicle((state) => ({ ...state, colors: [...state.colors, selectedColor] }));
     setSelectedColor("");
   };
 
-  const ownerHandler = (owner) => {
-    if (owner === "company") {
-      setVehicle((state) => ({ ...state, owner }));
-      return setOwnerType(owner);
-    }
+  const removeColorHandler = (color) => {
+    setVehicle((state) => ({ ...state, colors: state.colors.filter((curr) => curr !== color) }));
+  };
 
-    setVehicle((state) => ({ ...state, owner: "" }));
+  const ownerHandler = (owner) => {
+    setDrivers([]);
     setOwnerType(owner);
+    setDocument({ title: "", name: "", lastname: "", identificationCode: "" });
   };
 
   const searchDriverHandler = async (e) => {
@@ -111,90 +136,123 @@ const Form = () => {
     }
   };
 
-  const selectDriver = (identificationCode) => {
-    setVehicle((state) => ({ ...state, owner: identificationCode }));
+  const driverHandler = (driver) => {
+    const { name, lastname, identificationCode } = driver;
+
+    setDocument((state) => ({ ...state, name, lastname, identificationCode }));
   };
 
   return (
     <form onSubmit={onSubmit}>
-      <H2 className="mt-5" size="xl">
+      <H2 className="my-5 text-gray-700" weight="normal">
         Añadir vehículo
       </H2>
 
-      <FormGroup className="mt-5" label="Modelo:" size="sm" color="gray-700">
+      <FormGroup className="text-gray-700 lg:grid lg:grid-cols-2 lg:gap-4">
+        <div className="mb-5 lg:mb-0">
+          <Label>Modelo:</Label>
+
+          <Input
+            type="text"
+            name="model"
+            placeholder="Ingresa el modelo..."
+            value={vehicle.model}
+            onChange={vehicleHandler}
+          />
+        </div>
+
+        <div>
+          <Label>Marca:</Label>
+
+          <Select name="brand" value={vehicle.brand} onChange={vehicleHandler}>
+            <Option>Selecciona un modelo...</Option>
+            {brands.map(({ id, name }) => (
+              <Option key={id} value={name}>
+                {name}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      </FormGroup>
+
+      <FormGroup className="text-gray-700 lg:grid lg:grid-cols-2 lg:gap-4">
+        <div className="mb-5 lg:mb-0">
+          <Label>Tipo de vehículo:</Label>
+
+          <Input
+            type="text"
+            name="type"
+            placeholder="Ingresa el tipo de vehículo..."
+            value={vehicle.type}
+            onChange={vehicleHandler}
+          />
+        </div>
+
+        <div>
+          <Label>Número de neúmaticos:</Label>
+
+          <Input
+            type="number"
+            name="tiresNumber"
+            placeholder="Ingresa el número de neúmaticos..."
+            value={vehicle.tiresNumber}
+            onChange={vehicleHandler}
+          />
+        </div>
+      </FormGroup>
+
+      <FormGroup className="text-gray-700">
+        <Label>Número de licencia:</Label>
+
         <Input
           type="text"
-          name="model"
-          placeholder="Ingresa el modelo..."
-          color="gray-700"
-          value={vehicle.model}
+          name="licenseNumber"
+          placeholder="Ingresa el número de licencia..."
+          value={vehicle.licenseNumber}
           onChange={vehicleHandler}
         />
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Marca:" size="sm" color="gray-700">
-        <Select name="brand" color="gray-700" value={vehicle.brand} onChange={vehicleHandler}>
-          <Option>Selecciona un modelo...</Option>
-          {brands.map(({ id, name }) => (
-            <Option key={id} value={name}>
-              {name}
-            </Option>
-          ))}
-        </Select>
-      </FormGroup>
+      <FormGroup className="text-gray-700">
+        <Label>Colores:</Label>
 
-      <FormGroup className="mt-5" label="Colores:" size="sm" color="gray-700">
         <div className="flex items-center gap-2">
           <Input
             className="flex-1"
             type="text"
             name="colors"
             placeholder="Agregar un color..."
-            color="gray-700"
             value={selectedColor}
             onChange={(e) => setSelectedColor(e.target.value)}
           />
 
-          <div className="flex justify-center items-center w-10 h-10 rounded bg-blue-500 text-red-500 cursor-pointer">
-            <MdAddToPhotos className="text-white text-lg" onClick={addColorHandler} />
+          <div
+            className="flex justify-center items-center w-10 h-10 rounded bg-blue-500 text-red-500 cursor-pointer"
+            onClick={addColorHandler}
+          >
+            <MdAddToPhotos className="text-white text-lg" />
           </div>
         </div>
+
+        {vehicle.colors.length > 0 && (
+          <div className="mt-5 flex gap-2">
+            {vehicle.colors.map((color) => (
+              <div key={color} className="bg-gray-100 flex items-center justify-between p-3 w-28 rounded">
+                {color}
+
+                <MdOutlineCancel
+                  className="text-red-500 text-lg cursor-pointer"
+                  onClick={() => removeColorHandler(color)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Tipo de vehículo:" size="sm" color="gray-700">
-        <Input
-          type="text"
-          name="type"
-          placeholder="Ingresa el tipo de vehículo..."
-          color="gray-700"
-          value={vehicle.type}
-          onChange={vehicleHandler}
-        />
-      </FormGroup>
+      <FormGroup className="text-gray-700">
+        <Label>Propietario:</Label>
 
-      <FormGroup className="mt-5" label="Número de licencia:" size="sm" color="gray-700">
-        <Input
-          type="text"
-          name="licenseNumber"
-          placeholder="Ingresa el número de licencia..."
-          color="gray-700"
-          value={vehicle.licenseNumber}
-          onChange={vehicleHandler}
-        />
-      </FormGroup>
-
-      <FormGroup className="mt-5" label="Número de neúmaticos:" size="sm" color="gray-700">
-        <Input
-          type="number"
-          name="tiresNumber"
-          placeholder="Ingresa el número de neúmaticos..."
-          color="gray-700"
-          value={vehicle.tiresNumber}
-          onChange={vehicleHandler}
-        />
-      </FormGroup>
-
-      <FormGroup className="mt-5" label="Propietario:" size="sm" color="gray-700">
         <div className="flex text-center">
           <div
             className={classNames("flex-1 lg:flex-initial py-3 px-10 rounded-l cursor-pointer transition-all", {
@@ -218,78 +276,149 @@ const Form = () => {
         </div>
       </FormGroup>
 
-      {ownerType === "driver" && (
+      <H2 className="mb-5 text-gray-700" weight="normal">
+        Añadir documentos
+      </H2>
+
+      <FormGroup className="text-gray-700">
+        <Label>Documentos:</Label>
+
+        <Select name="title" value={document.title} onChange={documentHandler}>
+          <Option>Selecciona un documento...</Option>
+          {documentTypes.map(({ id, name }) => (
+            <Option key={id} value={name}>
+              {name}
+            </Option>
+          ))}
+        </Select>
+      </FormGroup>
+
+      {document?.title === "Certificado de circulación" && (
         <>
-          <FormGroup className="mt-5" label="Buscar un conductor específico:" size="sm" color="gray-700">
-            <Search placeholder="Buscar por nombre o cédula..." onChange={searchDriverHandler} />
-          </FormGroup>
-
-          {drivers.length > 0 && (
+          {ownerType === "driver" && (
             <>
-              <H2 className="mt-5" size="xl">
-                Lista de conductores
-              </H2>
+              <FormGroup className="text-gray-700">
+                <Label>Busqueda de conductor:</Label>
 
-              <div className="mt-5 whitespace-nowrap overflow-auto">
-                <div className="flex p-3" style={{ minWidth: "768px" }}>
-                  <span className="flex-1">Nombre completo</span>
+                <Search placeholder="Buscar por nombre o cédula..." onChange={searchDriverHandler} />
+              </FormGroup>
 
-                  <span className="flex-1">Cédula</span>
+              {drivers.length > 0 && (
+                <>
+                  <H3 weight="normal">Lista de conductores</H3>
 
-                  <span className="flex-1">Email</span>
+                  <div className="my-5 whitespace-nowrap overflow-auto border-2 border-gray-100 rounded">
+                    <div className="flex p-3" style={{ minWidth: "768px" }}>
+                      <span className="flex-1">Nombre completo</span>
 
-                  <span className="flex-1" />
-                </div>
+                      <span className="flex-1">Cédula</span>
 
-                <div className="flex flex-col gap-2" style={{ minWidth: "768px" }}>
-                  {drivers.map(({ driverId, name, lastname, identificationCode, email, photo }) => (
-                    <div className="flex items-center p-3 bg-gray-50 rounded" key={driverId}>
-                      <span className="flex-1 flex items-center">
-                        <img className="w-10 h-10 rounded-full object-cover" src={photo} alt="" />
-                        <span className="ml-2">
-                          {name} {lastname}
-                        </span>
-                      </span>
+                      <span className="flex-1">Email</span>
 
-                      <span className="flex-1">{identificationCode}</span>
-
-                      <span className="flex-1">{email}</span>
-
-                      <span className="flex-1">
-                        <Button
-                          type="button"
-                          bg={classNames({
-                            "blue-500": identificationCode !== vehicle.owner,
-                            "green-500": identificationCode === vehicle.owner,
-                          })}
-                          color="white"
-                          className="w-28"
-                          onClick={() => selectDriver(identificationCode)}
-                        >
-                          {identificationCode !== vehicle.owner ? "Seleccionar" : "Seleccionado"}
-                        </Button>
-                      </span>
+                      <span className="flex-1" />
                     </div>
-                  ))}
-                </div>
-              </div>
+
+                    <div className="flex flex-col gap-2" style={{ minWidth: "768px" }}>
+                      {drivers.map((driver) => {
+                        const { driverId, name, lastname, identificationCode, email, photo } = driver;
+                        const fullname = `${name} ${lastname}`;
+
+                        return (
+                          <div className="flex items-center p-3 bg-gray-50 rounded" key={driverId}>
+                            <span className="flex-1 flex items-center">
+                              <img className="w-10 h-10 rounded-full object-cover" src={photo} alt={fullname} />
+                              <span className="ml-2">{fullname}</span>
+                            </span>
+
+                            <span className="flex-1">{identificationCode}</span>
+
+                            <span className="flex-1">{email}</span>
+
+                            <span className="flex-1">
+                              <Button
+                                type="button"
+                                color={classNames({
+                                  primary: identificationCode !== document?.identificationCode,
+                                  success: identificationCode === document?.identificationCode,
+                                })}
+                                className="w-28"
+                                onClick={() => driverHandler(driver)}
+                              >
+                                {identificationCode !== document?.identificationCode ? "Seleccionar" : "Seleccionado"}
+                              </Button>
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <FormGroup className="text-gray-700">
+                <Label>Nombre del propietario:</Label>
+
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Ingresa el nombre del propietario..."
+                  value={document.name}
+                  onChange={documentHandler}
+                />
+              </FormGroup>
+
+              <FormGroup className="text-gray-700">
+                <Label>Apellido del propietario:</Label>
+
+                <Input
+                  type="text"
+                  name="lastname"
+                  placeholder="Ingresa el apellido del propietario..."
+                  value={document.lastname}
+                  onChange={documentHandler}
+                />
+              </FormGroup>
+
+              <FormGroup className="text-gray-700">
+                <Label>Cédula del propietario:</Label>
+
+                <Input
+                  type="text"
+                  name="identificationCode"
+                  placeholder="Ingresa la cédula del propietario..."
+                  value={document.identificationCode}
+                  onChange={documentHandler}
+                />
+              </FormGroup>
             </>
           )}
 
-          <FormGroup className="mt-5" label="Cédula del propietario:" size="sm" color="gray-700">
+          <FormGroup className="text-gray-700">
+            <Label>Peso máximo de carga del vehículo en kg:</Label>
+
             <Input
-              type="text"
-              name="owner"
-              placeholder="Ingresa la cédula del propietario..."
-              color="gray-700"
-              value={vehicle.owner}
-              onChange={vehicleHandler}
+              type="number"
+              name="maximumLoadMass"
+              placeholder="Ingresa el peso máximo de carga del vehículo en kg..."
+              onChange={documentHandler}
             />
+          </FormGroup>
+
+          <FormGroup className="text-gray-700">
+            <Label>Expedición:</Label>
+
+            <Date name="expedition" onChange={documentHandler} />
           </FormGroup>
         </>
       )}
 
-      <Button type="submit" bg="blue-500" color="white" className="mt-5 lg:w-96">
+      {ownerType === "company" && document.title !== "" && (
+        <span className="block mb-4 text-gray-700 text-blue-500">
+          Importante: Los datos de la compañia se agregarán automáticamente.
+        </span>
+      )}
+
+      <Button type="submit" className="lg:w-96">
         Registrar
       </Button>
     </form>

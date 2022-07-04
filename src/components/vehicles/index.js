@@ -13,7 +13,7 @@ const Vehicles = () => {
         <Form />
       </TabPane>
 
-      <TabPane tab="Vincular" id={3}></TabPane>
+      <TabPane tab="Asignaciones" id={3}></TabPane>
     </Tabs>
   );
 };

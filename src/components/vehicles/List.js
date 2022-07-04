@@ -120,12 +120,12 @@ const List = () => {
   };
 
   return (
-    <div>
-      <H2 className="mt-5" size="xl">
+    <>
+      <H2 className="my-5 text-gray-700" weight="normal">
         Listado de vehículos
       </H2>
 
-      <Search className="mt-5" placeholder="Buscar por id o número de placa..." onChange={onChange} />
+      <Search className="text-gray-700" placeholder="Buscar por id o número de placa..." onChange={onChange} />
 
       <div className="mt-5">
         <Table columns={COLUMNS_TABLE} dataSource={vehicles} />
@@ -134,7 +134,7 @@ const List = () => {
       <div className="mt-5 flex justify-end">
         <Pagination currentPage={page} total={vehiclesCounter} perPage={perPage} onChange={pageHandler} />
       </div>
-    </div>
+    </>
   );
 };
 
