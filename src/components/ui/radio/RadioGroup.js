@@ -17,11 +17,11 @@ const RadioGroup = ({ className, style, size = "sm", value, onChange, children }
     return child;
   });
 
-  const classes = classNames(sizes[size], className);
+  const classes = classNames("flex", sizes[size], className);
 
   return (
     <div className={classes} style={style}>
-      <div className="flex mt-5">{radios}</div>
+      {radios}
     </div>
   );
 };

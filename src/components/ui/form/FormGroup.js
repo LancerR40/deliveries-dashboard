@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-const defaultClasses = "mb-4";
+const defaultClasses = "mb-5";
 
 const FormGroup = ({ className, style, children }) => {
   const classes = classNames(defaultClasses, className);

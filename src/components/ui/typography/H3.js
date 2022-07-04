@@ -1,12 +1,12 @@
 import classNames from "classnames";
 
-const defaultClasses = "text-2xl";
+const defaultClasses = "text-xl";
 const weights = {
   normal: "font-normal",
   bold: "font-bold"
 }
 
-const H2 = ({ className, style, weight = "bold", children }) => {
+const H3 = ({ className, style, weight = "bold", children }) => {
   const classes = classNames(defaultClasses, weights[weight], className);
 
   return (
@@ -16,4 +16,4 @@ const H2 = ({ className, style, weight = "bold", children }) => {
   );
 };
 
-export default H2;
+export default H3;
