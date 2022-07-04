@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Navigation from "../../components/navigation";
+
 import { H1 } from "../../components/ui";
-import { DASHBOARD_SECTIONS } from "../../constants";
-import image from "../../assets/images/image.png";
+import Navigation from "../../components/navigation";
 
 import Drivers from "../../components/drivers";
 import Vehicles from "../../components/vehicles";
-import Deliveries from "../../components/deliveries";
+
+import { DASHBOARD_SECTIONS } from "../../constants";
+import image from "../../assets/images/image.png";
 
 const Dashboard = () => {
   const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.vehicles);
@@ -33,7 +34,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <H1 color="gray-700" size="2xl" className="mt-2">
+          <H1 className="mt-2" weight="normal">
             {DASHBOARD_SECTIONS.spanish[currentSection.toLowerCase()]}
           </H1>
         </div>
@@ -42,8 +43,6 @@ const Dashboard = () => {
           {currentSection === DASHBOARD_SECTIONS.english.drivers && <Drivers />}
 
           {currentSection === DASHBOARD_SECTIONS.english.vehicles && <Vehicles />}
-
-          {currentSection === DASHBOARD_SECTIONS.english.deliveries && <Deliveries />}
         </div>
       </div>
     </div>
