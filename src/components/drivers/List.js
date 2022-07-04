@@ -89,11 +89,11 @@ const List = () => {
 
   return (
     <div>
-      <H2 className="mt-5" size="xl">
+      <H2 className="my-5 text-gray-700" weight="normal">
         Listado de conductores
       </H2>
 
-      <Search className="mt-5" placeholder="Buscar por nombre o cédula..." onChange={onChange} />
+      <Search className="text-gray-700" placeholder="Buscar por nombre o cédula..." onChange={onChange} />
 
       <div className="mt-5">
         <Table columns={COLUMNS_TABLE} dataSource={drivers} />

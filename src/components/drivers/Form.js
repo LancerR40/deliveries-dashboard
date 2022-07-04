@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
+import classNames from "classnames";
 
-import { FormGroup, Input, Date, Photo, RadioGroup, Radio, Select, Option, Button, H2 } from "../ui";
+import { FormGroup, Input, Date, Photo, RadioGroup, Radio, Select, Option, Button, H2, Label } from "../ui";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
-import { driversDocumentsAPI, createDriverAPI, addDriverDocumentAPI } from "../../api/drivers";
+import { driversDocumentsAPI, createDriverAPI } from "../../api/drivers";
 
 const Form = () => {
   const [data, setData] = useState({
     gender: "Masculino",
   });
+
   const [document, setDocument] = useState({});
   const [displayDocumentForm, setDisplayDocumentForm] = useState(false);
+
   const [documentTypes, setDocumentTypes] = useState([]);
 
   useEffect(() => {
@@ -29,41 +32,29 @@ const Form = () => {
     e.preventDefault();
 
     const formData = new FormData();
+    const { name, lastname, identificationCode, gender, photo, dateOfBirth, email, password } = data;
 
-    formData.append("name", data.name);
-    formData.append("lastname", data.lastname);
-    formData.append("identificationCode", data.identificationCode);
-    formData.append("gender", data.gender);
-    formData.append("photo", data.photo);
-    formData.append("dateOfBirth", data.dateOfBirth);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
+    formData.append("name", name);
+    formData.append("lastname", lastname);
+    formData.append("identificationCode", identificationCode);
+    formData.append("gender", gender);
+    formData.append("photo", photo);
+    formData.append("dateOfBirth", dateOfBirth);
+    formData.append("email", email);
+    formData.append("password", password);
 
-    const createDriverResponse = await createDriverAPI(formData);
-
-    if (!createDriverResponse.success) {
-      return alert(createDriverResponse.error.message);
+    if (Object.keys(document).length === 4) {
+      formData.append("document", JSON.stringify(document));
     }
 
-    if (createDriverResponse.success) {
-      if (document.title) {
-        document.name = data.name;
-        document.lastname = data.lastname;
-        document.identificationCode = data.identificationCode;
-        document.gender = data.gender;
+    const response = await createDriverAPI(formData);
 
-        const addDriverDocumentResponse = await addDriverDocumentAPI(document);
+    if (!response.success) {
+      return alert(response.error.message);
+    }
 
-        if (addDriverDocumentResponse.error) {
-          return alert(addDriverDocumentResponse.error.message);
-        }
-
-        if (addDriverDocumentResponse.success) {
-          return alert("Se registró el conductor y el documento personal.");
-        }
-      }
-
-      alert(createDriverResponse.data.message);
+    if (response.success) {
+      alert(response.data.message);
     }
   };
 
@@ -91,68 +82,61 @@ const Form = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <H2 className="mt-5" size="xl">
+      <H2 className="my-5 text-gray-700" weight="normal">
         Añadir conductor
       </H2>
 
-      <FormGroup className="mt-5" label="Nombre:" size="sm" color="gray-700">
-        <Input type="text" name="name" placeholder="Ingresa el Nombre..." color="gray-700" onChange={driverOnChange} />
+      <FormGroup className="text-gray-700">
+        <Label>Nombre:</Label>
+
+        <Input type="text" name="name" placeholder="Ingresa el Nombre..." onChange={driverOnChange} />
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Apellido:" size="sm" color="gray-700">
-        <Input
-          type="text"
-          name="lastname"
-          placeholder="Ingresa el Apellido..."
-          color="gray-700"
-          onChange={driverOnChange}
-        />
+      <FormGroup className="text-gray-700">
+        <Label>Apellido:</Label>
+
+        <Input type="text" name="lastname" placeholder="Ingresa el Apellido..." onChange={driverOnChange} />
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Cédula:" size="sm" color="gray-700">
-        <Input
-          type="text"
-          name="identificationCode"
-          placeholder="Ingresa la cédula..."
-          color="gray-700"
-          onChange={driverOnChange}
-        />
+      <FormGroup className="text-gray-700">
+        <Label>Cédula</Label>
+
+        <Input type="text" name="identificationCode" placeholder="Ingresa la cédula..." onChange={driverOnChange} />
       </FormGroup>
 
-      <RadioGroup label="Género:" value="gender" size="sm" color="gray-700" className="mt-5" onChange={driverOnChange}>
-        <Radio size="sm" color="gray-700" value="Masculino" defaultChecked>
-          Masculino
-        </Radio>
-        <Radio size="sm" color="gray-700" value="Femenino">
-          Femenino
-        </Radio>
-      </RadioGroup>
+      <FormGroup className="text-gray-700">
+        <Label>Género</Label>
 
-      <FormGroup className="mt-5" label="Fecha de nacimiento:" size="sm" color="gray-700">
-        <Date name="dateOfBirth" color="gray-700" onChange={driverOnChange} />
+        <RadioGroup value="gender" onChange={driverOnChange}>
+          <Radio value="Masculino" defaultChecked>
+            Masculino
+          </Radio>
+          <Radio value="Femenino">Femenino</Radio>
+        </RadioGroup>
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Email:" size="sm" color="gray-700">
-        <Input type="email" name="email" placeholder="Ingresa el email..." color="gray-700" onChange={driverOnChange} />
+      <FormGroup className="text-gray-700">
+        <Label>Fecha de nacimiento:</Label>
+
+        <Date name="dateOfBirth" onChange={driverOnChange} />
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Contraseña:" size="sm" color="gray-700">
-        <Input
-          type="password"
-          name="password"
-          placeholder="Ingresa la contraseña..."
-          color="gray-700"
-          onChange={driverOnChange}
-        />
+      <FormGroup className="text-gray-700">
+        <Label>Email:</Label>
+
+        <Input type="email" name="email" placeholder="Ingresa el email..." onChange={driverOnChange} />
       </FormGroup>
 
-      <FormGroup className="mt-5" label="Foto:" size="sm" color="gray-700">
-        <Photo
-          name="photo"
-          placeholder="Subir una foto de identificación..."
-          color="gray-700"
-          onChange={driverOnChange}
-        />
+      <FormGroup className="text-gray-700">
+        <Label>Contraseña</Label>
+
+        <Input type="password" name="password" placeholder="Ingresa la contraseña..." onChange={driverOnChange} />
+      </FormGroup>
+
+      <FormGroup className="text-gray-700">
+        <Label>Foto</Label>
+
+        <Photo name="photo" placeholder="Subir una foto de identificación..." onChange={driverOnChange} />
       </FormGroup>
 
       <div className="mt-5">
@@ -162,43 +146,56 @@ const Form = () => {
         </span>
 
         <div
-          className={`transition-all ${
-            displayDocumentForm ? "mt-5 h-fit pointer-events-auto opacity-1" : "h-0 pointer-events-none opacity-0"
-          }`}
+          className={classNames("my-5 transition-all", {
+            "h-fit pointer-events-auto opacity-1": displayDocumentForm === true,
+            "h-0 pointer-events-none opacity-0": displayDocumentForm === false,
+          })}
         >
           {displayDocumentForm && (
-            <Select name="title" color="gray-700" onChange={documentOnChange}>
-              <Option>Selecciona un documento...</Option>
-              {documentTypes.map(({ id, name }) => (
-                <Option key={id} value={name}>
-                  {name}
-                </Option>
-              ))}
-            </Select>
+            <FormGroup className="text-gray-700">
+              <Label>Documento:</Label>
+
+              <Select name="title" onChange={documentOnChange}>
+                <Option>Selecciona un documento...</Option>
+                {documentTypes.map(({ id, name }) => (
+                  <Option key={id} value={name}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>
+            </FormGroup>
           )}
 
           {document?.title === "Licencia de conducir" && (
-            <div className="mt-5">
-              <Select name="type" color="gray-700" onChange={documentOnChange}>
-                <Option>Selecciona un tipo de licencia...</Option>
-                <Option value="A">A</Option>
-                <Option value="B">B</Option>
-                <Option value="C">C</Option>
-              </Select>
+            <>
+              <FormGroup className="text-gray-700">
+                <Label>Tipo de licencia:</Label>
 
-              <FormGroup className="mt-5" label="Expedición:" size="sm" color="gray-700">
-                <Date name="expedition" color="gray-700" onChange={documentOnChange} />
+                <Select name="type" onChange={documentOnChange}>
+                  <Option>Selecciona un tipo de licencia...</Option>
+                  <Option value="A">A</Option>
+                  <Option value="B">B</Option>
+                  <Option value="C">C</Option>
+                </Select>
               </FormGroup>
 
-              <FormGroup className="mt-5" label="Expiración:" size="sm" color="gray-700">
-                <Date name="expiration" color="gray-700" onChange={documentOnChange} />
+              <FormGroup className="text-gray-700">
+                <Label>Expedición:</Label>
+
+                <Date name="expedition" onChange={documentOnChange} />
               </FormGroup>
-            </div>
+
+              <FormGroup className="text-gray-700">
+                <Label>Expiración:</Label>
+
+                <Date name="expiration" onChange={documentOnChange} />
+              </FormGroup>
+            </>
           )}
         </div>
       </div>
 
-      <Button type="submit" bg="blue-500" color="white" className="mt-5 lg:w-96">
+      <Button type="submit" color="primary" className="lg:w-96">
         Registrar
       </Button>
     </form>
