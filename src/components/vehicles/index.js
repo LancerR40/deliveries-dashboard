@@ -5,7 +5,7 @@ import Assignments from "./Assignments";
 
 const Vehicles = () => {
   return (
-    <Tabs defaultTabPane={3}>
+    <Tabs defaultTabPane={1}>
       <TabPane tab="Listado" id={1}>
         <List />
       </TabPane>
