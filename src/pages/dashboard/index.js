@@ -6,10 +6,11 @@ import Navigation from "../../components/navigation";
 import Drivers from "../../components/drivers";
 import Vehicles from "../../components/vehicles";
 
+import { useUserContext } from "../../contexts/user";
 import { DASHBOARD_SECTIONS } from "../../constants";
-import image from "../../assets/images/image.png";
 
 const Dashboard = () => {
+  const { name, lastname, photo } = useUserContext();
   const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.vehicles);
 
   return (
@@ -26,11 +27,11 @@ const Dashboard = () => {
             <div className="hidden lg:relative lg:flex lg:items-center">
               <div className="mr-3">
                 <span className="text-gray-700 text-sm">
-                  Bienvenido, <span className="font-bold">Ronald</span>
+                  Bienvenido, <span className="font-bold">{name}</span>
                 </span>
               </div>
 
-              <img className="w-9 h-9 rounded-full object-cover" src={image} alt="" />
+              <img className="w-9 h-9 rounded-full object-cover" src={photo} alt={`${name} ${lastname}`} />
             </div>
           </div>
 

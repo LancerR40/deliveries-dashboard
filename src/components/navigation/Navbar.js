@@ -1,8 +1,10 @@
 import { useState } from "react";
+import navItems from "./navItems";
+
+import { useUserContext } from "../../contexts/user";
+
 import { GiHamburgerMenu } from "react-icons/gi";
 import { DASHBOARD_SECTIONS } from "../../constants";
-import image from "../../assets/images/image.png";
-import navItems from "./navItems";
 
 const handlerBg = (navItem, currentItem) => {
   if (navItem === currentItem) {
@@ -11,6 +13,8 @@ const handlerBg = (navItem, currentItem) => {
 };
 
 const Navbar = ({ current, change }) => {
+  const { name, lastname, photo } = useUserContext();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const onClick = () => {
@@ -60,7 +64,7 @@ const Navbar = ({ current, change }) => {
       </div>
 
       <div>
-        <img className="w-10 h-10 rounded-full object-cover" src={image} alt="Ronald Abu Saleh" />
+        <img className="w-10 h-10 rounded-full object-cover" src={photo} alt={`${name} ${lastname}`} />
       </div>
     </div>
   );
