@@ -12,3 +12,4 @@ export const VEHICLE_DOCUMENTS = `${BASE_URL}/vehicles/documents`;
 export const VEHICLE_BRANDS_URL = `${BASE_URL}/vehicles/brands`;
 export const VEHICLE_BY_QUERIES_URL = `${BASE_URL}/vehicles`;
 export const CREATE_VEHICLE_URL = `${BASE_URL}/vehicles/create`;
+export const CREATE_VEHICLE_ASSIGNMENT_URL = `${BASE_URL}/vehicles/assignment`;
