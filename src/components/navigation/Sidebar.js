@@ -1,4 +1,8 @@
 import navItems from "./navItems";
+
+import { useAuthContext } from "../../contexts/auth";
+import { useNavigate } from "react-router-dom";
+
 import { DASHBOARD_SECTIONS } from "../../constants";
 
 const handlerBg = (navItem, currentItem) => {
@@ -8,7 +12,17 @@ const handlerBg = (navItem, currentItem) => {
 };
 
 const Sidebar = ({ current, change }) => {
+  const { setAuth } = useAuthContext();
+  const navigate = useNavigate();
+
   const onClick = (section) => {
+    if (section === DASHBOARD_SECTIONS.english.logout.toLowerCase()) {
+      navigate("/");
+
+      setAuth({ isAuth: false, role: null });
+      return localStorage.removeItem("token");
+    }
+
     const name = DASHBOARD_SECTIONS.english[section];
 
     change(name);

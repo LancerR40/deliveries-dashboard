@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import navItems from "./navItems";
 
+import { useAuthContext } from "../../contexts/auth";
 import { useUserContext } from "../../contexts/user";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -13,7 +15,9 @@ const handlerBg = (navItem, currentItem) => {
 };
 
 const Navbar = ({ current, change }) => {
+  const { setAuth } = useAuthContext();
   const { name, lastname, photo } = useUserContext();
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +26,13 @@ const Navbar = ({ current, change }) => {
   };
 
   const handler = (section) => {
+    if (section === DASHBOARD_SECTIONS.english.logout.toLowerCase()) {
+      navigate("/");
+
+      setAuth({ isAuth: false, role: null });
+      return localStorage.removeItem("token");
+    }
+
     const name = DASHBOARD_SECTIONS.english[section];
 
     change(name);
