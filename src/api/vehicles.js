@@ -17,7 +17,7 @@ export const createVehicleAPI = async (data) => {
   }
 };
 
-export const createVehicleAssignment = async (data) => {
+export const createVehicleAssignmentAPI = async (data) => {
   try {
     const request = await axios.post(CREATE_VEHICLE_ASSIGNMENT_URL, data);
 

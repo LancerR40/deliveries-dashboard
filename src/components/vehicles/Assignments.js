@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FormGroup, Label, Select, Option, Search, H2, H3, Button, Pagination, Input } from "../ui";
 
 import { driversByQueriesAPI } from "../../api/drivers";
-import { createVehicleAssignment, getVehiclesAPI } from "../../api/vehicles";
+import { createVehicleAssignmentAPI, getVehiclesAPI } from "../../api/vehicles";
 
 const VEHICLE_COLUMNS = ["Propietario", "Número de licencia", "Modelo", "Marca", "Estado", "Descripción de estado"];
 const DRIVERS_COLUMNS = ["Nombre completo", "Cédula", "Estado", "Descripción de estado"];
@@ -52,7 +52,7 @@ const Assignments = () => {
   };
 
   const onSubmit = async () => {
-    const response = await createVehicleAssignment(data);
+    const response = await createVehicleAssignmentAPI(data);
 
     if (!response.success) {
       alert(response.error.message);
