@@ -91,7 +91,7 @@ const List = () => {
       const mapping = vehicles.map(({ vehicleId, model, brand, color, type, licenseNumber, tiresNumber, createdAt, statusName, statusDescription, ownerName, ownerLastname }) => {
 
         return ({
-          vehicleId,
+          key: vehicleId,
           model,
           brand,
           color,
