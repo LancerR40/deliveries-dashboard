@@ -10,11 +10,11 @@ const colors = {
   success: "bg-green-500 text-white hover:bg-green-600",
 };
 
-const Button = ({ className, style, type, size = "sm", color = "primary", onClick, children }) => {
+const Button = ({ className, style, type, size = "sm", color = "primary", disabled = false, onClick, children }) => {
   const classes = classNames(defaultClasses, sizes[size], colors[color], className);
 
   return (
-    <button className={classes} style={style} type={type} onClick={onClick}>
+    <button className={classes} style={style} type={type} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );

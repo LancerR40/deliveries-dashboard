@@ -29,6 +29,21 @@ const COLUMNS_TABLE = [
     key: "email",
   },
   {
+    title: "Estado",
+    dataIndex: "statusName",
+    key: "statusName",
+    render: (statusName) => {
+      const colors = statusName === "Disponible" ? "bg-green-200 text-green-500" : "bg-red-200 text-red-500";
+      const classes = `p-1.5 rounded text-center ${colors}`;
+
+      return (
+        <div className="flex">
+          <div className={classes}>{statusName}</div>
+        </div>
+      );
+    },
+  },
+  {
     title: "Creado en",
     dataIndex: "createdAt",
     key: "createdAt",
@@ -62,15 +77,9 @@ const List = () => {
       const { drivers, counter, perPage } = response.data;
 
       const mapping = drivers.map((driver) => {
-        const { driverId, identificationCode, email, createdAt } = driver;
+        const { driverId, identificationCode, email, statusName, createdAt } = driver;
 
-        return {
-          key: driverId,
-          name: driver,
-          identificationCode: identificationCode,
-          email: email,
-          createdAt: createdAt,
-        };
+        return { key: driverId, name: driver, identificationCode, email, statusName, createdAt };
       });
 
       setDrivers(mapping);
