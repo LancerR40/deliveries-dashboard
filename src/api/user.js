@@ -6,7 +6,7 @@ export const getUserAPI = async () => {
     const request = await axios.get(USER_DATA, {
       withCredentials: true,
       headers: {
-        "Access-Token": localStorage.getItem("token"),
+        "x-authorization-token": localStorage.getItem("token"),
       },
     });
 
