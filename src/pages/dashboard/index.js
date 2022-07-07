@@ -3,6 +3,7 @@ import { useState } from "react";
 import { H1 } from "../../components/ui";
 import Navigation from "../../components/navigation";
 
+import Principal from "../../components/principal";
 import Drivers from "../../components/drivers";
 import Vehicles from "../../components/vehicles";
 
@@ -35,12 +36,14 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <H1 className="mt-2" weight="normal">
+          <H1 className="mt-2 text-gray-700" weight="normal">
             {DASHBOARD_SECTIONS.spanish[currentSection.toLowerCase()]}
           </H1>
         </div>
 
         <div className="mt-3">
+          {currentSection === DASHBOARD_SECTIONS.english.dashboard && <Principal />}
+
           {currentSection === DASHBOARD_SECTIONS.english.drivers && <Drivers />}
 
           {currentSection === DASHBOARD_SECTIONS.english.vehicles && <Vehicles />}
