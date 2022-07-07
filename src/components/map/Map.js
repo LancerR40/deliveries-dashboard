@@ -3,10 +3,10 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import useScreen from "../../hooks/useScreen";
 
 const center = { lat: 6.42375, lng: -66.58973 };
-const zoom = 4;
+const zoom = 6;
 const config = { id: "google-map-script", googleMapsApiKey: "AIzaSyBEyUZbF5f1WdKcjtc7u7_B9dGyOSu-4o4" };
 
-const Map = ({ props }) => {
+const Map = (props) => {
   const { screenWidth } = useScreen();
   const containerStyle = {
     height: screenWidth < 1024 ? "400px" : "600px",
@@ -26,7 +26,14 @@ const Map = ({ props }) => {
   }
 
   return (
-    <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={zoom} onLoad={onLoad} onUnmount={onUnmount}>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={zoom}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      onClick={props.onClick}
+    >
       <Marker position={{ lat: 10.66663, lng: -71.61245 }} />
 
       <Marker position={{ lat: 10.48801, lng: -66.87919 }} />
