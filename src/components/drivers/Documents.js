@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { H2, H3, Search, Select, Option, FormGroup, Input, Date, Button, RadioGroup, Radio, Label } from "../ui";
 import className from "classnames";
+import toast, { Toaster } from "react-hot-toast";
 
 import { driversByQueriesAPI, driversDocumentsAPI, createDriverDocumentAPI } from "../../api/drivers";
 
@@ -15,17 +16,21 @@ const Documents = () => {
     driverDocuments();
   }, []);
 
+  const notify = (type, message) => toast[type](message);
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     const response = await createDriverDocumentAPI({ document });
 
     if (!response.success) {
-      alert(response.error.message);
+      notify("error", response.error.message);
     }
 
     if (response.success) {
-      alert(response.data.message);
+      setDocument({ name: "", lastname: "", identificationCode: "", gender: "Masculino" });
+      setDrivers([]);
+      notify("success", response.data.message);
     }
   };
 
@@ -80,6 +85,8 @@ const Documents = () => {
 
   return (
     <div>
+      <Toaster />
+
       <H2 className="my-5 text-gray-700" weight="normal">
         Añadir documentos
       </H2>
