@@ -44,6 +44,11 @@ const COLUMNS_TABLE = [
     },
   },
   {
+    title: "Descripción de estado",
+    dataIndex: "statusDescription",
+    key: "statusDescription",
+  },
+  {
     title: "Creado en",
     dataIndex: "createdAt",
     key: "createdAt",
@@ -77,9 +82,18 @@ const List = () => {
       const { drivers, counter, perPage } = response.data;
 
       const mapping = drivers.map((driver) => {
-        const { driverId, identificationCode, email, statusName, createdAt } = driver;
+        const { driverId, identificationCode, email, statusName, statusDescription, createdAt } = driver;
+        const description = statusDescription ?? "Sin observaciones";
 
-        return { key: driverId, name: driver, identificationCode, email, statusName, createdAt };
+        return {
+          key: driverId,
+          name: driver,
+          identificationCode,
+          email,
+          statusName,
+          statusDescription: description,
+          createdAt,
+        };
       });
 
       setDrivers(mapping);

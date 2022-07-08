@@ -56,6 +56,11 @@ const COLUMNS_TABLE = [
     },
   },
   {
+    title: "Descripción de estado",
+    dataIndex: "statusDescription",
+    key: "statusDescription",
+  },
+  {
     title: "Creado en",
     dataIndex: "createdAt",
     key: "createdAt",
@@ -89,7 +94,7 @@ const List = () => {
 
       /* prettier-ignore */
       const mapping = vehicles.map(({ vehicleId, model, brand, color, type, licenseNumber, tiresNumber, createdAt, statusName, statusDescription, ownerName, ownerLastname }) => {
-
+        const description = statusDescription ?? "Sin observaciones"
         return ({
           key: vehicleId,
           model,
@@ -100,7 +105,7 @@ const List = () => {
           tiresNumber,
           createdAt,
           statusName,
-          statusDescription,
+          statusDescription: description,
           owner: `${ownerName} ${ownerLastname}`,
         })
       });
