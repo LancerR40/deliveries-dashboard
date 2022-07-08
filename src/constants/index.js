@@ -1,7 +1,7 @@
 export const DASHBOARD_SECTIONS = {
   spanish: {
     dashboard: "Panel principal",
-    deliveries: "Pedidos",
+    deliveries: "Envíos",
     tracker: "Seguimiento",
     drivers: "Conductores",
     vehicles: "Vehiculos",

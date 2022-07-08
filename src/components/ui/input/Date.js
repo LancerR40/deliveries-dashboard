@@ -6,10 +6,18 @@ const sizes = {
   lg: "p-3 text-base",
 };
 
-const Date = ({ className, style, name, size = "sm", onChange }) => {
+const Date = ({ className, style, name, size = "sm", value, onChange }) => {
+  const customProps = {}
+
+  if (typeof value === "string") {
+    customProps.value = value
+  }
+
   const classes = classNames(defaultClasses, sizes[size], className);
 
-  return <input className={classes} style={style} type="date" name={name} onChange={onChange} />;
+
+
+  return <input className={classes} style={style} type="date" name={name} onChange={onChange} {...customProps} />;
 };
 
 export default Date;
