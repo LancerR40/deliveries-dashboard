@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FormGroup, Label, Select, Option, Search, H2, H3, Button, Pagination, Input } from "../ui";
+import toast, { Toaster } from "react-hot-toast";
 
 import { driversByQueriesAPI } from "../../api/drivers";
 import { createVehicleAssignmentAPI, getVehiclesAPI } from "../../api/vehicles";
@@ -21,6 +22,8 @@ const Assignments = () => {
     setPagination({ page: 1, perPage: 1, resourceCount: 1 });
     getData();
   }, [searchType]);
+
+  const notify = (type, message) => toast[type](message);
 
   const getData = async (field = "") => {
     const { page } = pagination;
@@ -55,13 +58,12 @@ const Assignments = () => {
     const response = await createVehicleAssignmentAPI(data);
 
     if (!response.success) {
-      alert(response.error.message);
+      notify("error", response.error.message);
     }
 
     if (response.success) {
       setData({ driverIdentificationCode: "", vehicleLicenseNumber: "" });
-
-      alert(response.data.message);
+      notify("success", response.data.message);
     }
   };
 
@@ -93,6 +95,8 @@ const Assignments = () => {
 
   return (
     <div>
+      <Toaster />
+
       <H2 className="mt-5 text-gray-700" weight="normal">
         Asignaciones de vehículos
       </H2>
