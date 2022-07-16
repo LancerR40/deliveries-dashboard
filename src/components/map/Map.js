@@ -1,15 +1,16 @@
 import { useState, useCallback, memo } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import useScreen from "../../hooks/useScreen";
 
 const center = { lat: 6.42375, lng: -66.58973 };
 const zoom = 6;
 const config = { id: "google-map-script", googleMapsApiKey: "AIzaSyBEyUZbF5f1WdKcjtc7u7_B9dGyOSu-4o4" };
 
-const Map = (props) => {
+const Map = ({ style, onClick, children }) => {
   const { screenWidth } = useScreen();
+
   const containerStyle = {
-    height: screenWidth < 1024 ? "400px" : "600px",
+    height: screenWidth < 1024 ? 400 : 600,
     borderRadius: "0.25rem",
   };
 
@@ -32,13 +33,9 @@ const Map = (props) => {
       zoom={zoom}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      onClick={props.onClick}
+      onClick={onClick}
     >
-      <Marker position={{ lat: 10.66663, lng: -71.61245 }} />
-
-      <Marker position={{ lat: 10.48801, lng: -66.87919 }} />
-
-      <Marker position={{ lat: 8.32111, lng: -71.61245 }} />
+      {children}
     </GoogleMap>
   );
 };
