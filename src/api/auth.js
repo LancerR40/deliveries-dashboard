@@ -6,7 +6,6 @@ export const checkSessionAPI = async () => {
 
   try {
     const request = await axios.get(CHECK_SESSION_URL, {
-      withCredentials: true,
       headers: {
         "x-authorization-token": token,
       },
@@ -26,9 +25,7 @@ export const checkSessionAPI = async () => {
 
 export const loginAPI = async (data) => {
   try {
-    const request = await axios.post(LOGIN_URL, data, {
-      withCredentials: true,
-    });
+    const request = await axios.post(LOGIN_URL, data);
 
     return request.data;
   } catch (error) {

@@ -2,11 +2,12 @@ import axios from "axios";
 import { USER_DATA } from "./constants";
 
 export const getUserAPI = async () => {
+  const token = localStorage.getItem("token") || "";
+
   try {
     const request = await axios.get(USER_DATA, {
-      withCredentials: true,
       headers: {
-        "x-authorization-token": localStorage.getItem("token"),
+        "x-authorization-token": token,
       },
     });
 
