@@ -12,9 +12,14 @@ const navItems = [
   },
   {
     id: 2,
-    name: "deliveries",
+    name: "shipments",
     icon: <TbTruckDelivery className="text-lg" />,
   },
+  // {
+  //   id: 3,
+  //   name: "deliveries",
+  //   icon: <TbTruckDelivery className="text-lg" />,
+  // },
   {
     id: 3,
     name: "tracker",
