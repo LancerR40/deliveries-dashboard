@@ -7,10 +7,12 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { Map } from "../map";
 
-import { getDriversAPI, getAssigmentsVehiclesAPI } from "../../api/shipments";
+import { createShipmentAPI, getDriversAPI, getAssigmentsVehiclesAPI } from "../../api/shipments";
 
 import { MdOutlineCancel } from "react-icons/md";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
+
+import toast, { Toaster } from "react-hot-toast";
 
 const initialState = {
   products: [],
@@ -41,6 +43,55 @@ const Shipments = () => {
     { lat: Number(data.shipment.origin.latitude), lng: Number(data.shipment.origin.longitude) },
     { lat: Number(data.shipment.destination.latitude), lng: Number(data.shipment.destination.longitude) }
   ]
+
+  const notify = (type, message) => toast[type](message);
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+
+    // if (data.products.length < 1) {
+    //   return notify("error", "Debes añadir productos al envío.")
+    // }
+
+    // if (!data.driverIdentificationCode) {
+    //   return notify("error", "Debes añadir la cédula de un conductor para continuar.")
+    // }
+
+    // if (!data.vehicleLicenseNumber) {
+    //   return notify("error", "Debes añadir un número de licencia de vehículo para continuar.")
+    // }
+
+    // if (!data.shipment.address) {
+    //   return notify("error", "Debes añadir una dirección de envío para continuar.")
+    // }
+
+    // if (!data.shipment.origin.latitude) {
+    //   return notify("error", "Debes añadir una latitud de origen para continuar.")      
+    // }
+
+    // if (!data.shipment.origin.longitude) {
+    //   return notify("error", "Debes añadir una longitud de origen para continuar.")
+    // }
+
+    // if (!data.shipment.destination.latitude) {
+    //   return notify("error", "Debes añadir una latitud de destino para continuar.")      
+    // }
+
+    // if (!data.shipment.destination.longitude) {
+    //   return notify("error", "Debes añadir una longitud de destino para continuar.")
+    // }
+
+    const response = await createShipmentAPI(data)
+
+    if (!response.success) {
+      notify("error", response.error.message)
+    }
+
+    if (response.success) {
+      setData(initialState)
+      notify("success", response.data.message)
+    }
+  }
 
   const searchDriver = async (value) => {
     const response = await getDriversAPI({ field: value });
@@ -97,15 +148,15 @@ const Shipments = () => {
 
   const addProduct = () => {
     if (!selectedProduct.productName) {
-      return
+      return notify("error", "Debes agregar un nombre de producto.");
     }
 
     if (!selectedProduct.productQuantity) {
-      return
+      return notify("error", "Debes agregar una cantidad de producto.");
     }
 
     if (data.products.some(prod => prod.productName.toLowerCase() === selectedProduct.productName.toLowerCase())) {
-      return
+      return notify("error", "El producto ya se encuentra registrado.");
     }
    
     setData((state) => ({ ...state, products: [...state.products, selectedProduct] }))
@@ -134,6 +185,8 @@ const Shipments = () => {
 
   return (
     <div>
+      <Toaster />
+
       <H2 className="my-5 text-gray-700" weight="normal">
         Selección de conductor y vehículo
       </H2>
@@ -305,7 +358,7 @@ const Shipments = () => {
         <Polyline path={polylinePath} options={{ geodesic: true, strokeColor: "#669DF6", strokeOpacity: 1.0, strokeWeight: 2 }} />
       </Map>
 
-      <Button type="submit" color="primary" className="lg:w-96 mt-5">
+      <Button type="submit" color="primary" className="lg:w-96 mt-5" onClick={onSubmit}>
         Registrar
       </Button>
     </div>
