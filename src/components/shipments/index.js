@@ -1,6 +1,7 @@
 import { H2, H3, FormGroup, Label, Input, Button } from "../ui";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import classNames from "classnames";
+import { Marker, Polyline } from "@react-google-maps/api"
 
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
@@ -11,24 +12,19 @@ import { getDriversAPI, getAssigmentsVehiclesAPI } from "../../api/shipments";
 import { MdOutlineCancel } from "react-icons/md";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-
 const initialState = {
   products: [],
   driverIdentificationCode: "",
   vehicleLicenseNumber: "",
   shipment: {
+    address: "",
     origin: {
-      latitude: 0,
-      longitude: 0,
+      latitude: "",
+      longitude: "",
     },
     destination: {
-      latitude: 0,
-      longitude: 0,
+      latitude: "",
+      longitude: "",
     },
   },
 };
@@ -37,6 +33,14 @@ const Shipments = () => {
   const [data, setData] = useState(initialState);
   const [mapCoordinatesType, setMapCoordinatesType] = useState("initial");
   const [assigmentsVehicles, setAssigmentsVehicles] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState({ productName: "", productQuantity: "" })
+  const [selectedVehicle, setSelectedVehicle] = useState(null)
+
+  const polylinePath = [
+    { lat: Number(data.shipment.origin.latitude), lng: Number(data.shipment.origin.longitude) },
+    { lat: Number(data.shipment.destination.latitude), lng: Number(data.shipment.destination.longitude) }
+  ]
 
   const searchDriver = async (value) => {
     const response = await getDriversAPI({ field: value });
@@ -66,6 +70,7 @@ const Shipments = () => {
 
   const selectDriver = async (e) => {
     setData((state) => ({ ...state, driverIdentificationCode: e.value, vehicleLicenseNumber: "" }));
+    setSelectedVehicle(null)
 
     const response = await getAssigmentsVehiclesAPI({ field: e.value });
 
@@ -85,23 +90,47 @@ const Shipments = () => {
     }
   };
 
-  const selectVehicle = (vehicle) => {
-    setData((state) => ({ ...state, vehicleLicenseNumber: vehicle.value }));
+  const selectVehicle = (option) => {
+    setData((state) => ({ ...state, vehicleLicenseNumber: option.value }));
+    setSelectedVehicle(option)
   };
 
-  const addProduct = () => {};
+  const addProduct = () => {
+    if (!selectedProduct.productName) {
+      return
+    }
 
-  const removeProduct = () => {};
+    if (!selectedProduct.productQuantity) {
+      return
+    }
 
-  const onClickMapHandler = (e) => {
-    console.log(e);
+    if (data.products.some(prod => prod.productName.toLowerCase() === selectedProduct.productName.toLowerCase())) {
+      return
+    }
+   
+    setData((state) => ({ ...state, products: [...state.products, selectedProduct] }))
+    setSelectedProduct({ productName: "", productQuantity: "" })
+  };
+
+  const removeProduct = (productName) => {
+    const products = data.products.filter(product => product.productName.toLowerCase() !== productName.toLowerCase())
+    setData((state) => ({ ...state, products }))
+  };
+
+  const onClickMapHandler = (mapProps) => {
+    const latitude = String(mapProps.latLng.lat())
+    const longitude = String(mapProps.latLng.lng())
+
+    if (mapCoordinatesType === "initial") {
+      return setData(state => ({ ...state, shipment: { ...state.shipment, origin: { latitude, longitude } } }))
+    }
+
+    setData(state => ({ ...state, shipment: { ...state.shipment, destination: { latitude, longitude } } }))
   };
 
   const coordinatesTypeHandler = (type) => {
     setMapCoordinatesType(type);
   };
-
-  console.log(data);
 
   return (
     <div>
@@ -128,8 +157,7 @@ const Shipments = () => {
           <Select
             className="text-sm"
             options={assigmentsVehicles}
-            value={data.vehicleLicenseNumber}
-            controlShouldRenderValue={true}
+            value={selectedVehicle}
             onChange={selectVehicle}
           />
         </FormGroup>
@@ -139,48 +167,54 @@ const Shipments = () => {
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Cédula del conductor:</Label>
 
-          <Input type="text" name="name" placeholder="Cédula del conductor..." />
+          <Input type="text" name="driverIdentificationCode" placeholder="Cédula del conductor..." value={data.driverIdentificationCode} />
         </FormGroup>
 
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Número de licencia del vehículo:</Label>
 
-          <Input type="text" name="name" placeholder="Número de licencia del vehículo..." />
+          <Input type="text" name="vehicleLicenseNumber" placeholder="Número de licencia del vehículo..." value={data.vehicleLicenseNumber} />
         </FormGroup>
       </FormGroup>
 
       <H2 className="mb-5 text-gray-700" weight="normal">
-        Lista de productos
+        Agregar productos
       </H2>
 
-      <FormGroup className="text-sm text-gray-700">
-        <Label>Agregar producto:</Label>
-
+      <FormGroup>
         <div className="lg:flex lg:gap-4">
-          <Input className="flex-1 mb-5 lg:mb-0" type="text" placeholder="Nombre del producto..." />
+          <FormGroup className="flex-1 text-sm text-gray-700">
+            <Label>Nombre del producto:</Label>
+            <Input type="text" name="productName" placeholder="Nombre del producto..." value={selectedProduct.productName} onChange={(e) => setSelectedProduct((state) => ({ ...state, productName: e.target.value }))} />
+          </FormGroup>
 
-          <Input className="flex-1" type="number" placeholder="Cantidad del producto..." />
+          <FormGroup className="flex-1 text-sm text-gray-700">
+            <Label>Cantidad del producto:</Label>
+            <Input type="number" name="productQuantity" placeholder="Cantidad del producto..." value={selectedProduct.productQuantity} onChange={(e) => setSelectedProduct((state) => ({ ...state, productQuantity: e.target.value }))} />
+          </FormGroup>
 
-          <div
-            className="flex justify-center items-center w-10 h-10 rounded bg-blue-500 text-red-500 cursor-pointer"
-            // onClick={addColorHandler}
-          >
-            <HiOutlineViewGridAdd className="text-white text-lg" />
-          </div>
+          <FormGroup className="flex items-end">
+            <div
+                className="flex justify-center items-center w-full lg:w-10 h-10 rounded bg-blue-500 text-red-500 cursor-pointer"
+                onClick={addProduct}
+              >
+              <HiOutlineViewGridAdd className="text-white text-lg" />
+            </div>
+          </FormGroup>
         </div>
 
         {data.products.length > 0 && (
           <div className="mt-5 flex gap-2">
-            {/* {vehicle.colors.map((color) => (
-                <div key={color} className="bg-gray-100 flex items-center justify-between p-3 w-28 rounded">
-                  {color}
+            {data.products.map(({productName, productQuantity }) => (
+                <div key={productName} className="bg-gray-100 flex items-center justify-between p-3 rounded">
+                  <div className="text-gray-700 text-sm">
+                    <span>Nombre: {productName}</span>
+                    <span className="block mt-2">Cantidad: {productQuantity}</span>
+                  </div>
 
-                  <MdOutlineCancel
-                    className="text-red-500 text-lg cursor-pointer"
-                    onClick={() => removeColorHandler(color)}
-                  />
+                  <MdOutlineCancel className="ml-5 text-red-500 text-xl cursor-pointer" onClick={() => removeProduct(productName)} />
                 </div>
-              ))} */}
+              ))}
           </div>
         )}
       </FormGroup>
@@ -192,7 +226,7 @@ const Shipments = () => {
       <FormGroup className="text-sm text-gray-700 flex-1">
         <Label>Dirección de envío:</Label>
 
-        <Input type="text" name="name" placeholder="Ingresar la dirección de envío..." />
+        <Input type="text" name="shipmentAddress" placeholder="Ingresar la dirección de envío..." value={data.shipment.address} onChange={e => setData(state => ({ ...state, shipment: { ...state.shipment, address: e.target.value } }))} />
       </FormGroup>
 
       <H3 className="mb-5 text-gray-700" weight="normal">
@@ -203,13 +237,13 @@ const Shipments = () => {
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Latitud:</Label>
 
-          <Input type="number" name="name" placeholder="Agregar latitud inicial..." />
+          <Input type="number" name="originLatitude" placeholder="Agregar latitud inicial..." value={data.shipment.origin.latitude} onChange={(e) => setData(state => ({ ...state, shipment: { ...state.shipment, origin: { ...state.shipment.origin, latitude: e.target.value } } }))} />
         </FormGroup>
 
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Longitud:</Label>
 
-          <Input type="number" name="name" placeholder="Agregar longitud inicial..." />
+          <Input type="number" name="originLongitude" placeholder="Agregar longitud inicial..." value={data.shipment.origin.longitude} onChange={(e) => setData(state => ({ ...state, shipment: { ...state.shipment, origin: { ...state.shipment.origin, longitude: e.target.value } } }))} />
         </FormGroup>
       </FormGroup>
 
@@ -221,13 +255,13 @@ const Shipments = () => {
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Latitud:</Label>
 
-          <Input type="number" name="name" placeholder="Agregar latitud final..." />
+          <Input type="number" name="destinationLatitude" placeholder="Agregar latitud final..." value={data.shipment.destination.latitude} onChange={(e) => setData(state => ({ ...state, shipment: { ...state.shipment, destination: { ...state.shipment.destination, latitude: e.target.value } } }))} />
         </FormGroup>
 
         <FormGroup className="text-sm text-gray-700 flex-1">
           <Label>Longitud:</Label>
 
-          <Input type="number" name="name" placeholder="Agregar longitud final..." />
+          <Input type="number" name="destinationLongitude" placeholder="Agregar longitud final..." value={data.shipment.destination.longitude} onChange={(e) => setData(state => ({ ...state, shipment: { ...state.shipment, destination: { ...state.shipment.destination, longitude: e.target.value } } }))} />
         </FormGroup>
       </FormGroup>
 
@@ -257,7 +291,19 @@ const Shipments = () => {
         </div>
       </div>
 
-      <Map onClick={onClickMapHandler}></Map>
+      <Map onClick={onClickMapHandler}>
+        <Marker
+          label="Punto inicial"
+          position={{ lat: Number(data.shipment.origin.latitude), lng: Number(data.shipment.origin.longitude) }}
+        />
+
+        <Marker
+          label="Punto de destino"
+          position={{ lat: Number(data.shipment.destination.latitude), lng: Number(data.shipment.destination.longitude) }}
+        />
+
+        <Polyline path={polylinePath} options={{ geodesic: true, strokeColor: "#669DF6", strokeOpacity: 1.0, strokeWeight: 2 }} />
+      </Map>
 
       <Button type="submit" color="primary" className="lg:w-96 mt-5">
         Registrar
