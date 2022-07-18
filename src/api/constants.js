@@ -16,6 +16,6 @@ export const VEHICLE_BY_QUERIES_URL = `${BASE_URL}/vehicles`;
 export const CREATE_VEHICLE_URL = `${BASE_URL}/vehicles/create`;
 export const CREATE_VEHICLE_ASSIGNMENT_URL = `${BASE_URL}/vehicles/assignment`;
 
-export const CREATE_SHIPMENT_URL = `${BASE_URL}/shipments`
+export const CREATE_SHIPMENT_URL = `${BASE_URL}/shipments/create`
 export const GET_DRIVERS_SHIPMENTS_URL = `${BASE_URL}/shipments/drivers`;
 export const GET_VEHICLES_SHIPMENTS_URL = `${BASE_URL}/shipments/vehicles`;
