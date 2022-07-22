@@ -5,6 +5,7 @@ import Navigation from "../../components/navigation";
 
 import Principal from "../../components/principal";
 import Shipments from "../../components/shipments";
+import Tracking from "../../components/tracking"
 import Drivers from "../../components/drivers";
 import Vehicles from "../../components/vehicles";
 
@@ -13,7 +14,7 @@ import { DASHBOARD_SECTIONS } from "../../constants";
 
 const Dashboard = () => {
   const { name, lastname, photo } = useUserContext();
-  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.shipments);
+  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.tracker);
 
   return (
     <div className="lg:flex lg:min-h-screen lg:h-screen">
@@ -46,6 +47,8 @@ const Dashboard = () => {
           {currentSection === DASHBOARD_SECTIONS.english.dashboard && <Principal />}
 
           {currentSection === DASHBOARD_SECTIONS.english.shipments && <Shipments />}
+
+          {currentSection === DASHBOARD_SECTIONS.english.tracker && <Tracking />}
 
           {currentSection === DASHBOARD_SECTIONS.english.drivers && <Drivers />}
 
