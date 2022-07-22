@@ -7,16 +7,10 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 import { driversDocumentsAPI, createDriverAPI } from "../../api/drivers";
 
+const initialState = { name: "", lastname: "", identificationCode: "", gender: "Masculino", dateOfBirth: "", email: "", password: "" }
+
 const Form = () => {
-  const [data, setData] = useState({
-    name: "",
-    lastname: "",
-    identificationCode: "",
-    gender: "Masculino",
-    dateOfBirth: "",
-    email: "",
-    password: "",
-  });
+  const [data, setData] = useState(initialState);
 
   const [document, setDocument] = useState({});
   const [displayDocumentForm, setDisplayDocumentForm] = useState(false);
@@ -65,15 +59,7 @@ const Form = () => {
     if (response.success) {
       setDocument({});
       setDisplayDocumentForm(false);
-      setData({
-        name: "",
-        lastname: "",
-        identificationCode: "",
-        gender: "Masculino",
-        dateOfBirth: "",
-        email: "",
-        password: "",
-      });
+      setData(initialState);
 
       notify("success", response.data.message);
     }

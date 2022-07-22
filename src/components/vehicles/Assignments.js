@@ -183,7 +183,7 @@ const Assignments = () => {
                       const ownerFullname = `${ownerName} ${ownerLastname}`;
                       const statusColor =
                         statusName === "Disponible" ? "bg-green-200 text-green-500" : "bg-red-200 text-red-500";
-                      const statusClasses = `p-1.5 rounded text-center ${statusColor}`;
+                      const statusClasses = `py-2 rounded text-center ${statusColor}`;
                       const description = statusDescription || "Sin observaciones";
 
                       return (
@@ -193,7 +193,7 @@ const Assignments = () => {
                           <td className="p-3.5">{model}</td>
                           <td className="p-3.5">{brand}</td>
                           <td className="p-3.5 flex">
-                            <div className={statusClasses}>{statusName}</div>
+                            <div className={statusClasses} style={{ minWidth: "151px" }}>{statusName}</div>
                           </td>
                           <td className="p-3.5">{description}</td>
                           <td className="p-3.5">
@@ -239,8 +239,8 @@ const Assignments = () => {
                     ({ driverId, name, lastname, identificationCode, photo, statusName, statusDescription }) => {
                       const fullname = `${name} ${lastname}`;
                       const statusColor =
-                        statusName === "Disponible" ? "bg-green-200 text-green-500" : "bg-red-200 text-red-500";
-                      const statusClasses = `p-1.5 rounded text-center ${statusColor}`;
+                        statusName === "Disponible" ? "bg-green-200 text-green-500" : statusName === "En proceso de entrega" ? "bg-blue-200 text-blue-500" : "bg-red-200 text-red-500";
+                      const statusClasses = `py-2 rounded text-center ${statusColor}`;
                       const description = statusDescription || "Sin observaciones";
 
                       const isBtnDisabled = statusName !== "Disponible";
@@ -255,7 +255,7 @@ const Assignments = () => {
                           </td>
                           <td className="p-3.5">{identificationCode}</td>
                           <td className="p-3.5 flex">
-                            <div className={statusClasses}>{statusName}</div>
+                            <div className={statusClasses} style={{ minWidth: "151px" }}>{statusName}</div>
                           </td>
                           <td className="p-3.5">{description}</td>
                           {!isBtnDisabled && (

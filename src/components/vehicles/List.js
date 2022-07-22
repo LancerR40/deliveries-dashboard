@@ -50,9 +50,9 @@ const COLUMNS_TABLE = [
         "No disponible": "bg-red-500",
       };
 
-      const classes = `${statusBg[statusName]} py-1.5 rounded text-center`;
+      const classes = `${statusBg[statusName]} py-2 rounded text-center`;
 
-      return <div className={classes}>{statusName}</div>;
+      return <div className={classes} style={{ minWidth: "151px" }}>{statusName}</div>;
     },
   },
   {

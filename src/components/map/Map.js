@@ -3,7 +3,7 @@ import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import useScreen from "../../hooks/useScreen";
 
 const center = { lat: 6.42375, lng: -66.58973 };
-const zoom = 6;
+const zoom = 5.8;
 const config = { id: "google-map-script", googleMapsApiKey: "AIzaSyBEyUZbF5f1WdKcjtc7u7_B9dGyOSu-4o4" };
 
 const Map = ({ style, onClick, children }) => {
