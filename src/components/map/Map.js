@@ -8,11 +8,9 @@ const config = { id: "google-map-script", googleMapsApiKey: "AIzaSyBEyUZbF5f1WdK
 
 const Map = ({ style, onClick, children }) => {
   const { screenWidth } = useScreen();
-
-  const containerStyle = {
-    height: screenWidth < 1024 ? 400 : 600,
-    borderRadius: "0.25rem",
-  };
+  
+  const height = style?.height ? style.height : screenWidth < 1024 ? 400 : 600
+  const containerStyle = { height, borderRadius: "0.25rem" };
 
   const { isLoaded } = useJsApiLoader(config);
 
