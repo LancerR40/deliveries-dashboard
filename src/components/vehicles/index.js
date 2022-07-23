@@ -2,6 +2,7 @@ import { Tabs, TabPane } from "../ui";
 import List from "./List";
 import Form from "./Form";
 import Assignments from "./Assignments";
+import AssignmentsList from "./AssignmentsList";
 
 const Vehicles = () => {
   return (
@@ -14,8 +15,12 @@ const Vehicles = () => {
         <Form />
       </TabPane>
 
-      <TabPane tab="Asignaciones" id={3}>
+      <TabPane tab="Asignar" id={3}>
         <Assignments />
+      </TabPane>
+
+      <TabPane tab="Listado de asignaciones" id={4}>
+        <AssignmentsList />
       </TabPane>
     </Tabs>
   );
