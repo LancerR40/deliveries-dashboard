@@ -15,9 +15,11 @@ export const VEHICLE_BRANDS_URL = `${BASE_URL}/vehicles/brands`;
 export const VEHICLE_BY_QUERIES_URL = `${BASE_URL}/vehicles`;
 export const CREATE_VEHICLE_URL = `${BASE_URL}/vehicles/create`;
 export const CREATE_VEHICLE_ASSIGNMENT_URL = `${BASE_URL}/vehicles/assignment`;
+export const ASSIGNMENT_VEHICLES_URL = `${BASE_URL}/vehicles/assignment`
 
 export const CREATE_SHIPMENT_URL = `${BASE_URL}/shipments/create`
 export const GET_DRIVERS_SHIPMENTS_URL = `${BASE_URL}/shipments/drivers`;
 export const GET_VEHICLES_SHIPMENTS_URL = `${BASE_URL}/shipments/vehicles`;
 export const GET_ACTIVE_SHIPMENT_DRIVERS = `${BASE_URL}/shipments/active`;
 export const GET_DRIVER_SHIPMENT_COORDINATES = `${BASE_URL}/shipments/tracking/coordinates`
+export const GET_ALL_SHIPMENT_TRACKING_COORDINATES = `${BASE_URL}/shipments/tracking/coordinates/all`
