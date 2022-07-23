@@ -77,11 +77,11 @@ const Login = () => {
           <Input type="password" name="password" placeholder="Ingresa tu contraseña..." onChange={onChange} />
         </FormGroup>
 
-        <div className="text-right">
+        {/* <div className="text-right">
           <Link className="text-sm text-blue-500" to="/">
             ¿Perdiste tu contraseña?
           </Link>
-        </div>
+        </div> */}
 
         <div>
           <hr className="mt-5 border border-gray-100" />

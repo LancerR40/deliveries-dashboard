@@ -2,13 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuthContext } from "./contexts/auth";
 import { UserContextProvider } from "./contexts/user";
 
+import NotFound from "./pages/NotFound"
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/dashboard";
 
 const App = () => {
-  const {
-    auth: { isAuth },
-  } = useAuthContext();
+  const { auth: { isAuth } } = useAuthContext();
 
   return (
     <Router>
@@ -25,6 +24,8 @@ const App = () => {
             }
           />
         )}
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
