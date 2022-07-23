@@ -32,7 +32,7 @@ const Tracking = () => {
 
       interval = setInterval(() => {
         getTrackingCoordinates()
-      }, 30000)
+      }, 20000)
     }
 
     return () => {

@@ -54,11 +54,11 @@ const COLUMNS_TABLE = [
     dataIndex: "createdAt",
     key: "createdAt",
   },
-  {
-    title: "Acciones",
-    dataIndex: "actions",
-    key: "actions"
-  }
+  // {
+  //   title: "Acciones",
+  //   dataIndex: "actions",
+  //   key: "actions"
+  // }
 ];
 
 const List = () => {
@@ -92,14 +92,14 @@ const List = () => {
       const mapping = drivers.map((driver) => {
         const { driverId, identificationCode, email, statusName, statusDescription, createdAt } = driver;
         const description = statusDescription ?? "Sin observaciones";
-        const actions = (
-          <div className="flex gap-2">
-            <button className="bg-blue-500 text-white text-sm rounded py-2 px-3" onClick={editHandler}>Detalle</button>
-            <button className="bg-red-500 text-white text-sm rounded p-2">Eliminar</button>
-          </div>
-        )
+        // const actions = (
+        //   <div className="flex gap-2">
+        //     <button className="bg-blue-500 text-white text-sm rounded py-2 px-3" onClick={editHandler}>Detalle</button>
+        //     <button className="bg-red-500 text-white text-sm rounded p-2">Eliminar</button>
+        //   </div>
+        // )
 
-        return { key: driverId, name: driver, identificationCode, email, statusName, statusDescription: description, createdAt, actions };
+        return { key: driverId, name: driver, identificationCode, email, statusName, statusDescription: description, createdAt };
       });
 
       setDrivers(mapping);
