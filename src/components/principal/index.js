@@ -11,11 +11,13 @@ const Principal = () => {
   const notify = (type, message) => toast[type](message);
 
   useEffect(() => {
+    getAllShipmentTrackingCoordinates()
+  }, [])
+
+  useEffect(() => {
     let interval = null
 
     if (!interval) {
-      getAllShipmentTrackingCoordinates()
-
       interval = setInterval(() => {
         getAllShipmentTrackingCoordinates()
       }, 20000)

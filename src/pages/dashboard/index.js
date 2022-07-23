@@ -14,7 +14,7 @@ import { DASHBOARD_SECTIONS } from "../../constants";
 
 const Dashboard = () => {
   const { name, lastname, photo } = useUserContext();
-  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.tracker);
+  const [currentSection, setCurrentSection] = useState(DASHBOARD_SECTIONS.english.dashboard);
 
   return (
     <div className="lg:flex lg:min-h-screen lg:h-screen">
