@@ -5,8 +5,10 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { driversByQueriesAPI, driversDocumentsAPI, createDriverDocumentAPI } from "../../api/drivers";
 
+const initialState = { name: "", lastname: "", identificationCode: "", gender: "Masculino", title: "" }
+
 const Documents = () => {
-  const [document, setDocument] = useState({ name: "", lastname: "", identificationCode: "", gender: "Masculino" });
+  const [document, setDocument] = useState(initialState);
   const [documentTypes, setDocumentTypes] = useState([]);
 
   const [selectedDriver, setSelectedDriver] = useState(null);
@@ -28,7 +30,7 @@ const Documents = () => {
     }
 
     if (response.success) {
-      setDocument({ name: "", lastname: "", identificationCode: "", gender: "Masculino" });
+      setDocument(initialState);
       setDrivers([]);
       notify("success", response.data.message);
     }
@@ -72,7 +74,6 @@ const Documents = () => {
 
   const documentOnChange = (e) => {
     const { name, value } = e.target;
-
     setDocument((state) => ({ ...state, [name]: value }));
   };
 
@@ -155,7 +156,7 @@ const Documents = () => {
         <FormGroup className="mt-5 text-gray-700">
           <Label>Tipo de documento:</Label>
 
-          <Select name="title" onChange={documentOnChange}>
+          <Select name="title" onChange={documentOnChange} value={document.title}>
             <Option>Selecciona un tipo de documento...</Option>
             {documentTypes.map(({ id, name }) => (
               <Option key={id} value={name}>

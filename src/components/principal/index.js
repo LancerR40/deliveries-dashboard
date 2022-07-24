@@ -2,13 +2,13 @@ import { useState, useEffect } from "react"
 import { H2 } from "../ui";
 import { Map } from "../map";
 import { Marker } from "@react-google-maps/api"
-import toast, { Toaster } from "react-hot-toast";
+// import toast, { Toaster } from "react-hot-toast";
 import { getAllShipmentTrackingCoordinatesAPI } from "../../api/shipments"
 
 const Principal = () => {
   const [shipments, setShipments] = useState([])
 
-  const notify = (type, message) => toast[type](message);
+  // const notify = (type, message) => toast[type](message);
 
   useEffect(() => {
     getAllShipmentTrackingCoordinates()
@@ -35,9 +35,9 @@ const Principal = () => {
 
     if (response.success) {
 
-      if (!response.data.length) {
-        notify("error", "Aún no hay envíos activos.");
-      }
+      // if (!response.data.length) {
+      //   notify("error", "Aún no hay envíos activos.");
+      // }
 
       setShipments(response.data)
     }
@@ -45,7 +45,7 @@ const Principal = () => {
 
   return (
     <div>
-      <Toaster />
+      {/* <Toaster /> */}
 
       <H2 className="mb-5 text-gray-700" weight="normal">
         Envíos activos
