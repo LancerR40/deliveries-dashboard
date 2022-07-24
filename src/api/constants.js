@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:4000/api/v1";
+// const BASE_URL = "http://localhost:4000/api/v1";
+const BASE_URL = "https://deliveries-back-server-1.herokuapp.com/api/v1"
 
 export const USER_DATA = `${BASE_URL}/admins/data`;
 
