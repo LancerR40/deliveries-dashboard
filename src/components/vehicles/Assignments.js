@@ -243,7 +243,7 @@ const Assignments = () => {
                       const statusClasses = `py-2 rounded text-center ${statusColor}`;
                       const description = statusDescription || "Sin observaciones";
 
-                      const isBtnDisabled = statusName !== "Disponible";
+                      // const isBtnDisabled = statusName !== "Disponible";
 
                       return (
                         <tr key={driverId}>
@@ -258,13 +258,13 @@ const Assignments = () => {
                             <div className={statusClasses} style={{ minWidth: "151px" }}>{statusName}</div>
                           </td>
                           <td className="p-3.5">{description}</td>
-                          {!isBtnDisabled && (
                             <td className="p-3.5">
                               <Button color="primary" onClick={() => driverOnClick(identificationCode)}>
                                 Seleccionar
                               </Button>
                             </td>
-                          )}
+                          {/* {!isBtnDisabled && (
+                          )} */}
                         </tr>
                       );
                     }

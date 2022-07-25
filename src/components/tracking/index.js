@@ -20,7 +20,7 @@ const Tracking = () => {
   }, [])
 
   useEffect(() => {
-    if (!shipments.all && !shipments.selected) return
+    // if (!shipments.all && !shipments.selected) return
 
     if (shipments.selected && !shipments.selected?.driverLatitude && !shipments.selected?.driverLongitude) {
       getTrackingCoordinates()
@@ -32,7 +32,7 @@ const Tracking = () => {
 
       interval = setInterval(() => {
         getTrackingCoordinates()
-      }, 20000)
+      }, 15000)
     }
 
     return () => {
@@ -47,8 +47,10 @@ const Tracking = () => {
       const data = response.data
 
       if (data.length) {
-        setShipments((state) => ({ ...state, all: data, selected: data[0] }))
+        return setShipments((state) => ({ ...state, all: data, selected: data[0] }))
       }
+
+      setShipments({ all: [], selected: null })
     }
   }
 

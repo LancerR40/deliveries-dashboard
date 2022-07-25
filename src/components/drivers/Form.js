@@ -46,7 +46,7 @@ const Form = () => {
     formData.append("email", email);
     formData.append("password", password);
 
-    if (Object.keys(document).length === 4) {
+    if (Object.keys(document).length !== 0) {
       formData.append("document", JSON.stringify(document));
     }
 

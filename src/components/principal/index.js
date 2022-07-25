@@ -20,7 +20,7 @@ const Principal = () => {
     if (!interval) {
       interval = setInterval(() => {
         getAllShipmentTrackingCoordinates()
-      }, 20000)
+      }, 15000)
     }
 
     return () => {
