@@ -1,5 +1,5 @@
 # deliveries-dashboard
-Front-End corresponding to my [URBE University](https://www.urbe.edu/index.jsp) Thesis called **Software for the Online Management of Road Transport Cargoes** 
+Dashboard Front-End corresponding to my [URBE University](https://www.urbe.edu/index.jsp) Thesis called **Software for the Online Management of Road Transport Cargoes** 
 
 * [React](https://es.reactjs.org/)
 * [Tailwind CSS](https://tailwindcss.com/)
