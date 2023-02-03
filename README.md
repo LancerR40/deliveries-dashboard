@@ -42,7 +42,7 @@ Admin Login
 </p>
 
 ## Requirements
-You must clone and run the [server](https://github.com/LancerR40/deliveries-back) first to continue
+You must clone and run the [Node.js server](https://github.com/LancerR40/deliveries-back) first to continue
 
 ## Clone
 
