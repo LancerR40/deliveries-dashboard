@@ -44,7 +44,7 @@ Admin Login
 ## Requirements
 You must have:
 
-* Installed [node.js](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/) package manager on your machine
+* Installed [node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/) package manager on your machine
 * Clone and run the [server](https://github.com/LancerR40/deliveries-back) first to continue
 
 ## Clone
