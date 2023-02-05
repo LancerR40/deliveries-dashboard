@@ -4,7 +4,7 @@ Dashboard Front-End corresponding to my [URBE University](https://www.urbe.edu/i
 * [React](https://es.reactjs.org/)
 * [Tailwind CSS](https://tailwindcss.com/)
 
-## Table of Contents
+## Table of contents
 * [Project information](#project-information)
 * [Requirements](#requirements)
 * [Clone project](#clone)
@@ -42,7 +42,10 @@ Admin Login
 </p>
 
 ## Requirements
-You must clone and run the [Node.js server](https://github.com/LancerR40/deliveries-back) first to continue
+You must have:
+
+* Installed [node.js](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/) package manager on your machine
+* Clone and run the [server](https://github.com/LancerR40/deliveries-back) first to continue
 
 ## Clone
 
