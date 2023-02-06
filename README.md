@@ -3,6 +3,7 @@ Dashboard Front-End corresponding to my [URBE University](https://www.urbe.edu/i
 
 * [React](https://es.reactjs.org/)
 * [Tailwind CSS](https://tailwindcss.com/)
+* [Google Maps API](https://developers.google.com/maps?hl=es-419)
 
 ## Table of contents
 * [Project information](#project-information)
